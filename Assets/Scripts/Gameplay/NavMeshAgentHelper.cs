@@ -13,14 +13,14 @@ namespace MyProject.Gameplay
         public bool IsMoving => _isMoving;
         private Vector3 _lastFrameDirection;
         public Vector3 LastFrameDirection => _lastFrameDirection;
-
+        public bool UpdateRotation { get => _agent.updateRotation; set => _agent.updateRotation = value; }
         //private bool _isKeepingVelocity = false;
         //private Vector2 _velocityKept = Vector2.zero;
         //private float _keepVelocityUntilTime;
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
-            _agent.updateRotation = false;
+            //_agent.updateRotation = false;
             _agent.updateUpAxis = false;
             _lastFrameDirection = Vector3.forward;
             //_lastFrameDirection = Vector2.up;

@@ -6,32 +6,39 @@ namespace MyProject.Gameplay
 {
     public class CharacterRotationController : MonoBehaviour
     {
-        //private Transform _rotationRootTransform;
         private NavMeshAgentHelper _agentHelper;
+
+        private bool _isForcingLookAt;
+        private Quaternion _desiredRotation;
         private void Start()
         {
-            //_rotationRootTransform = transform.Find("Armature");
-            //if (_rotationRootTransform == null) Debug.LogError("旋转根节点找不到了");
             _agentHelper = GetComponent<NavMeshAgentHelper>();
             if (_agentHelper == null) Debug.LogError("寻路Helper找不到了");
         }
         private void Update()
         {
-            Debug.Log(_agentHelper.LastFrameDirection);
-            FollowMovementDirection();
+            if (_isForcingLookAt)
+            {
+                transform.rotation = Quaternion.Lerp(transform.rotation, _desiredRotation, 0.8f);
+            }
         }
-        private void FollowMovementDirection()
-        {
-            transform.LookAt(transform.position + _agentHelper.LastFrameDirection);
-        }
+        // NavMesh自带这个功能，就不重复造轮子了
+        //private void UpdateDesiredRotationByMovementDirection()
+        //{
+        //    _desiredRotation = Quaternion.LookRotation(_forceLookAtDirection);
+        //}
 
-        public void TryForceLookAtPosition(Vector3 position)
+        public void TryForceLookAtDirection(Vector3 direction)
         {
-            
+            _isForcingLookAt = true;
+            _agentHelper.UpdateRotation = false;
+
+            _desiredRotation = Quaternion.LookRotation(direction);
         }
         public void ReleaseLookAtPosition()
         {
-
+            _isForcingLookAt = false;
+            _agentHelper.UpdateRotation = true;
         }
     }
 }
