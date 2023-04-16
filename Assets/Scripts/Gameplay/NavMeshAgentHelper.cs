@@ -11,8 +11,8 @@ namespace MyProject.Gameplay
         public NavMeshAgent Agent => _agent;
         private bool _isMoving;
         public bool IsMoving => _isMoving;
-        private Vector3 _lastFrameDirection;
-        public Vector3 LastFrameDirection => _lastFrameDirection;
+        private Vector3 _lastFrameVelocity;
+        public Vector3 LastFrameVelocity => _lastFrameVelocity;
         public bool UpdateRotation { get => _agent.updateRotation; set => _agent.updateRotation = value; }
         //private bool _isKeepingVelocity = false;
         //private Vector2 _velocityKept = Vector2.zero;
@@ -20,10 +20,8 @@ namespace MyProject.Gameplay
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
-            //_agent.updateRotation = false;
             _agent.updateUpAxis = false;
-            _lastFrameDirection = Vector3.forward;
-            //_lastFrameDirection = Vector2.up;
+            _lastFrameVelocity = Vector3.zero;
         }
         private void FixedUpdate()
         {
@@ -31,7 +29,7 @@ namespace MyProject.Gameplay
         }
         private void LateUpdate()
         {
-            if (_agent.velocity != Vector3.zero) _lastFrameDirection = _agent.velocity.normalized;
+            _lastFrameVelocity = _agent.velocity;
             //Debug.Log($"LateUpdate: _lastFrameVelocity: {_lastFrameVelocity},_agent.velocity: {_agent.velocity}");
         }
         //private void LateUpdate()

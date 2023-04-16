@@ -9,7 +9,9 @@ namespace MyProject.Gameplay
         private NavMeshAgentHelper _agentHelper;
 
         private bool _isForcingLookAt;
+        public bool IsForcingLookAt => _isForcingLookAt;
         private Quaternion _desiredRotation;
+        public Quaternion DesiredRotation => _desiredRotation;
         private void Start()
         {
             _agentHelper = GetComponent<NavMeshAgentHelper>();
@@ -19,7 +21,7 @@ namespace MyProject.Gameplay
         {
             if (_isForcingLookAt)
             {
-                transform.rotation = Quaternion.Lerp(transform.rotation, _desiredRotation, 0.8f);
+                transform.rotation = Quaternion.Lerp(transform.rotation, _desiredRotation, 0.9f);
             }
         }
         // NavMesh自带这个功能，就不重复造轮子了

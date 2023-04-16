@@ -11,10 +11,14 @@ namespace MyProject.Gameplay
 
         private Animator _animator;
         private CharacterMovementController _movementController;
+        private CharacterRotationController _rotationController;
+        private NavMeshAgentHelper _agentHelper;
         private void Start()
         {
             _animator = GetComponent<Animator>();
             _movementController = GetComponent<CharacterMovementController>();
+            _rotationController = GetComponent<CharacterRotationController>();
+            _agentHelper = GetComponent<NavMeshAgentHelper>();
         }
 
         private void Update()
@@ -43,6 +47,16 @@ namespace MyProject.Gameplay
                 _characterMovementStateLastFrame = ECharacterMovementState.idle;
                 _animator.ResetTrigger("Walk");
                 _animator.ResetTrigger("Run");
+            }
+
+            if (_rotationController.IsForcingLookAt)
+            {
+                var velocityDirection = Quaternion.LookRotation(_agentHelper.LastFrameVelocity);
+                var locomotionQuaternion = _rotationController.DesiredRotation * velocityDirection;
+                var locomotionDirection = (locomotionQuaternion * Vector3.forward).normalized;
+
+                _animator.SetFloat("LocomotionX", locomotionDirection.x);
+                _animator.SetFloat("LocomotionY", locomotionDirection.z);
             }
         }
     }
