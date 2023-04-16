@@ -25,9 +25,9 @@
                 },
                 {
                     "name": "RotateCamera",
-                    "type": "Value",
+                    "type": "Button",
                     "id": "185782bc-aa53-4467-bf13-8f667837fbba",
-                    "expectedControlType": "Vector2",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
@@ -49,15 +49,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
-                },
-                {
-                    "name": "LookAtPosition",
-                    "type": "Value",
-                    "id": "eb4b365d-0deb-4840-99db-9d5fd79781e9",
-                    "expectedControlType": "Vector2",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -130,7 +121,7 @@
                 {
                     "name": "",
                     "id": "4fb706ef-859d-444a-add9-849b60f1b51b",
-                    "path": "<Mouse>/position",
+                    "path": "<Mouse>/middleButton",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -157,17 +148,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "LookAt",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "5a192e1e-5518-4227-b129-7c474111ec7d",
-                    "path": "<Mouse>/position",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LookAtPosition",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

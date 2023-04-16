@@ -10,51 +10,39 @@ namespace MyProject.Gameplay
         private ECharacterMovementState _characterMovementStateLastFrame;
 
         private Animator _animator;
-        private CharacterMovementController _movementController;
-        private CharacterRotationController _rotationController;
-        private NavMeshAgentHelper _agentHelper;
+        private CharacterStanceController _stanceController;
         private void Start()
         {
-            _animator = GetComponent<Animator>();
-            _movementController = GetComponent<CharacterMovementController>();
-            _rotationController = GetComponent<CharacterRotationController>();
-            _agentHelper = GetComponent<NavMeshAgentHelper>();
+            _animator = GetComponentInChildren<Animator>();
+            _stanceController = GetComponent<CharacterStanceController>();
         }
 
         private void Update()
         {
-            //Debug.Log($"{_movementController.IsMoving}, {_movementController.IsRunning}");
-            if (_movementController.IsMoving)
+            if (_stanceController.Velocity.magnitude == 0)
             {
-                if (_movementController.IsRunning)
-                {
-                    if (_characterMovementStateLastFrame != ECharacterMovementState.run) _animator.SetTrigger("Run");
-                    _animator.ResetTrigger("Walk");
-                    _animator.ResetTrigger("Idle");
-                    _characterMovementStateLastFrame = ECharacterMovementState.run;
-                }
-                else
-                {
-                    if (_characterMovementStateLastFrame != ECharacterMovementState.walk) _animator.SetTrigger("Walk");
-                    _characterMovementStateLastFrame = ECharacterMovementState.walk;
-                    _animator.ResetTrigger("Run");
-                    _animator.ResetTrigger("Idle");
-                }
-            }
-            else
-            {
-                if (_characterMovementStateLastFrame != ECharacterMovementState.idle) _animator.SetTrigger("Idle");
-                _characterMovementStateLastFrame = ECharacterMovementState.idle;
+                _animator.SetTrigger("Idle");
                 _animator.ResetTrigger("Walk");
                 _animator.ResetTrigger("Run");
             }
-
-            if (_rotationController.IsForcingLookAt)
+            else
             {
-                var velocityDirection = Quaternion.LookRotation(_agentHelper.LastFrameVelocity);
-                var locomotionQuaternion = _rotationController.DesiredRotation * velocityDirection;
-                var locomotionDirection = (locomotionQuaternion * Vector3.forward).normalized;
+                if (_stanceController.StanceCategory == EStanceCategory.run)
+                {
+                    _animator.SetTrigger("Run");
+                    _animator.ResetTrigger("Idle");
+                    _animator.ResetTrigger("Walk");
+                    return;
+                }
 
+                _animator.SetTrigger("Walk");
+                _animator.ResetTrigger("Idle");
+                _animator.ResetTrigger("Run");
+
+                var velocity = _stanceController.Velocity;
+                var forwardDirection = transform.forward;
+                var locomotionDirection = Quaternion.FromToRotation(forwardDirection, velocity) * Vector3.forward;
+                //Debug.Log($"velocity: {velocity}, forwardDirection: {forwardDirection}, locomotionDirection: {locomotionDirection}");
                 _animator.SetFloat("LocomotionX", locomotionDirection.x);
                 _animator.SetFloat("LocomotionY", locomotionDirection.z);
             }

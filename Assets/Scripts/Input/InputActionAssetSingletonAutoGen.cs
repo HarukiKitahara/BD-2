@@ -49,9 +49,9 @@ namespace MyProject.Input
                 },
                 {
                     ""name"": ""RotateCamera"",
-                    ""type"": ""Value"",
+                    ""type"": ""Button"",
                     ""id"": ""185782bc-aa53-4467-bf13-8f667837fbba"",
-                    ""expectedControlType"": ""Vector2"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
@@ -73,15 +73,6 @@ namespace MyProject.Input
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""LookAtPosition"",
-                    ""type"": ""Value"",
-                    ""id"": ""eb4b365d-0deb-4840-99db-9d5fd79781e9"",
-                    ""expectedControlType"": ""Vector2"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -154,7 +145,7 @@ namespace MyProject.Input
                 {
                     ""name"": """",
                     ""id"": ""4fb706ef-859d-444a-add9-849b60f1b51b"",
-                    ""path"": ""<Mouse>/position"",
+                    ""path"": ""<Mouse>/middleButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -183,17 +174,6 @@ namespace MyProject.Input
                     ""action"": ""LookAt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""5a192e1e-5518-4227-b129-7c474111ec7d"",
-                    ""path"": ""<Mouse>/position"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""LookAtPosition"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -207,7 +187,6 @@ namespace MyProject.Input
             m_Gameplay_RotateCamera = m_Gameplay.FindAction("RotateCamera", throwIfNotFound: true);
             m_Gameplay_MovementZoomCamera = m_Gameplay.FindAction("MovementZoomCamera", throwIfNotFound: true);
             m_Gameplay_LookAt = m_Gameplay.FindAction("LookAt", throwIfNotFound: true);
-            m_Gameplay_LookAtPosition = m_Gameplay.FindAction("LookAtPosition", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -274,7 +253,6 @@ namespace MyProject.Input
         private readonly InputAction m_Gameplay_RotateCamera;
         private readonly InputAction m_Gameplay_MovementZoomCamera;
         private readonly InputAction m_Gameplay_LookAt;
-        private readonly InputAction m_Gameplay_LookAtPosition;
         public struct GameplayActions
         {
             private @InputActionAssetSingleton m_Wrapper;
@@ -284,7 +262,6 @@ namespace MyProject.Input
             public InputAction @RotateCamera => m_Wrapper.m_Gameplay_RotateCamera;
             public InputAction @MovementZoomCamera => m_Wrapper.m_Gameplay_MovementZoomCamera;
             public InputAction @LookAt => m_Wrapper.m_Gameplay_LookAt;
-            public InputAction @LookAtPosition => m_Wrapper.m_Gameplay_LookAtPosition;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -309,9 +286,6 @@ namespace MyProject.Input
                 @LookAt.started += instance.OnLookAt;
                 @LookAt.performed += instance.OnLookAt;
                 @LookAt.canceled += instance.OnLookAt;
-                @LookAtPosition.started += instance.OnLookAtPosition;
-                @LookAtPosition.performed += instance.OnLookAtPosition;
-                @LookAtPosition.canceled += instance.OnLookAtPosition;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -331,9 +305,6 @@ namespace MyProject.Input
                 @LookAt.started -= instance.OnLookAt;
                 @LookAt.performed -= instance.OnLookAt;
                 @LookAt.canceled -= instance.OnLookAt;
-                @LookAtPosition.started -= instance.OnLookAtPosition;
-                @LookAtPosition.performed -= instance.OnLookAtPosition;
-                @LookAtPosition.canceled -= instance.OnLookAtPosition;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -358,7 +329,6 @@ namespace MyProject.Input
             void OnRotateCamera(InputAction.CallbackContext context);
             void OnMovementZoomCamera(InputAction.CallbackContext context);
             void OnLookAt(InputAction.CallbackContext context);
-            void OnLookAtPosition(InputAction.CallbackContext context);
         }
     }
 }

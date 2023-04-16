@@ -61,3 +61,6 @@ Thumbs.db.meta
 
 # VS Code
 *.vscode
+
+#BrainDead自定义的内容
+/gitignore的资产/

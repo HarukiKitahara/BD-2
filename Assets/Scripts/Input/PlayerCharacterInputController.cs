@@ -10,53 +10,49 @@ namespace MyProject.Input
 {
     public class PlayerCharacterInputController : MonoBehaviour
     {
-        private CharacterMovementController _movementController;
-        private CharacterRotationController _rotationController;
-        private Coroutine _lookAtCoroutine;
+        [SerializeField]
+        private CharacterStanceController _stanceController;
         private void Start()
         {
-            _movementController = GetComponent<CharacterMovementController>();
-            if (_movementController == null) Debug.LogError("找不到要控制的CharacterMovementController");
-
-            _rotationController = GetComponent<CharacterRotationController>();
-            if (_rotationController == null) Debug.LogError("找不到要控制的CharacterRotationController");
+            //_stanceController = GetComponent<CharacterStanceController>();
+            if (_stanceController == null) Debug.LogError("找不到要控制的CharacterStanceController");
 
             InputActionAssetSingleton.Instance.Gameplay.Move.performed += OnMovePerformed;
             InputActionAssetSingleton.Instance.Gameplay.Move.canceled += OnMoveCanceled;
 
-            InputActionAssetSingleton.Instance.Gameplay.Sprint.performed += o => _movementController.TryRun(true);
-            InputActionAssetSingleton.Instance.Gameplay.Sprint.canceled += o => _movementController.TryRun(false);
-
-            InputActionAssetSingleton.Instance.Gameplay.LookAt.performed += OnLookAtPerformed;
-            InputActionAssetSingleton.Instance.Gameplay.LookAt.canceled += OnLookAtCanceled;
+            InputActionAssetSingleton.Instance.Gameplay.Sprint.performed += o => _stanceController.TryToggleRunState();
+            InputActionAssetSingleton.Instance.Gameplay.LookAt.performed += OnLookAtStart;
         }
         #region 角色朝向控制
-        private void OnLookAtPerformed(InputAction.CallbackContext obj)
+        private void OnLookAtStart(InputAction.CallbackContext obj)
         {
-            _lookAtCoroutine = StartCoroutine(LookAtCoroutine());
-        }
-        private void OnLookAtCanceled(InputAction.CallbackContext obj)
-        {
-            _rotationController.ReleaseLookAtPosition();
-            StopCoroutine(_lookAtCoroutine);
-        }
-        IEnumerator LookAtCoroutine()
-        {
-            while (true)
+            if (_stanceController.IsForcingLookingAt)
             {
-                _rotationController.TryForceLookAtDirection(GetLookAtDirection());
-                yield return 0;
+                _stanceController.TryStopForceLookAt();
+                Debug.Log("取消朝向锁定，不再持续更新朝向");
             }
-
+            else
+            {
+                _stanceController.TryStartForceLookAt();
+                Debug.Log("开始朝向锁定，持续更新朝向");
+            }
+        }
+        private void Update()
+        {
+            if (_stanceController.IsForcingLookingAt) _stanceController.TrySetLookAtRotation(Quaternion.LookRotation(GetLookAtDirection()));
             Vector3 GetLookAtDirection()
             {
                 var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
-                var plane = new Plane(Vector3.up, _rotationController.transform.position);  // TODO: 如果地形有起伏，这个方法就不能用了
+                var plane = new Plane(Vector3.up, _stanceController.transform.position);  // TODO: 如果地形有起伏，这个方法就不能用了
                 if (plane.Raycast(ray, out float enter))
                 {
-                    return ray.GetPoint(enter) - _rotationController.transform.position;
+                    return ray.GetPoint(enter) - _stanceController.transform.position;
                 }
-                else { throw new Exception("物理学不存在了"); }
+                else
+                {
+                    Debug.LogWarning("要么视角太低打到天空，要么解析几何不存在了");
+                    return _stanceController.Velocity;
+                }
             }
         }
         #endregion
@@ -72,11 +68,11 @@ namespace MyProject.Input
             var inputDirection = obj.ReadValue<Vector2>();     
             var cameraRotationY = Camera.main.transform.rotation.eulerAngles.y;     
             var moveDirection = Quaternion.Euler(0, cameraRotationY, 0) * new Vector3(inputDirection.x, 0, inputDirection.y);
-            _movementController.TryMoveToward(moveDirection);
+            _stanceController.TryKeepMoveDirection(moveDirection);
         }
         private void OnMoveCanceled(InputAction.CallbackContext obj)
         {
-            _movementController.TryMoveToward(Vector3.zero);
+            _stanceController.TryKeepMoveDirection(Vector3.zero);
         }
         #endregion
     }

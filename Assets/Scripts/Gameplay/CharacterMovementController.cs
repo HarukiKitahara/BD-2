@@ -1,46 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+
 namespace MyProject.Gameplay
 {
     public class CharacterMovementController : MonoBehaviour
     {
-        [SerializeField] private float _baseSpeed = 3f;
-        [SerializeField] private float _sprintSpeedMultiplier = 3f;
-        //[SerializeField] private float _sprintStaminaCostPerSecond = 40f;
-
-        private Vector3 _direction;
-
-        private NavMeshAgentHelper _agentHelper;
-
-        private bool _canRun = true;
-        private bool _canMove = true;
-
-        private bool _isRunning = false;
-        public bool IsRunning => _isRunning;
-        public bool IsMoving => _agentHelper.IsMoving;
-        private void Start()
+        private NavMeshAgent _agent;    // 坚决隔离开，不准其他类直接改NavMeshAgent！这样更容易查参数被谁改了，也容易定位Bug。
+        public bool IsMoving => LastFrameVelocity.magnitude != 0;      // TODO：后续可能要考虑推挤、击退等“角色不想走，但实际移动了”的情况，目前先统一走NavMeshAgent。
+        public Vector3 LastFrameVelocity { get; private set; }      // 用上一帧的数据更稳定一点，防止单帧内脚本执行顺序混乱的情况
+        public bool UpdateRotation { get => _agent.updateRotation; set => _agent.updateRotation = value; }  // 需要与_agent对话都应该像这样getset
+        private void Awake()
         {
-            _agentHelper = GetComponent<NavMeshAgentHelper>();
+            _agent = GetComponent<NavMeshAgent>();
+            _agent.updateUpAxis = false;
+            LastFrameVelocity = Vector3.zero;
         }
-        private void Update()
+        private void LateUpdate() 
         {
-            if (!_canMove) return;
-            var actualSpeed = _baseSpeed;
-            if (_isRunning && _canRun)      // 满足不了条件就只能走
-            {
-                actualSpeed = _baseSpeed * _sprintSpeedMultiplier;
-            }
-            _agentHelper.Agent.velocity = _direction * actualSpeed;
-            //Debug.Log($"PreferedDirection: {_direction * actualSpeed}, ActualVelocity: {_agentHelper.Agent.velocity}");
+            LastFrameVelocity = _agent.velocity;
         }
-        public void TryMoveToward(Vector3 direction)
+        public void SetVelocity(Vector3 velocity)
         {
-            _direction = direction.normalized;
-        }
-        public void TryRun(bool state)
-        {
-            _isRunning = state;
+            _agent.velocity = velocity;
         }
     }
 }
