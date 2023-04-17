@@ -2,7 +2,8 @@
     "name": "MyProject.Gameplay",
     "rootNamespace": "MyProject.Gameplay",
     "references": [
-        "GUID:4307f53044263cf4b835bd812fc161a4"
+        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:267c1f8739a8ac94ab663d0333bb4718"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
