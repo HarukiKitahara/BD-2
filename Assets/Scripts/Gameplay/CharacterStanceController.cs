@@ -1,20 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using System;
 namespace MyProject.Gameplay
 {
     public enum EStanceCategory { walk, run, crouch }
     public class CharacterStanceController : MonoBehaviour
     {
-        [SerializeField] private float _walkSpeed = 3f;
-        [SerializeField] private float _runSpeed = 6f;
+        [SerializeField] private float _walkSpeed = 2f;
+        [SerializeField] private float _runSpeed = 4f;
         private CharacterMovementController _movementController;
         private Vector3 _keepMoveDirection;     // 保证要么是zero，要么被normalized
         public EStanceCategory StanceCategory { get; private set; }
-        public bool IsForcingLookingAt => !_movementController.UpdateRotation;  // NavMesh在转，就说明没锁定朝向
+        public bool IsForcingLookingAt => !_movementController.IsUpdatingRotation;  // TODO!!这个逻辑是有问题的，尤其是在击退时！ NavMesh在转，就说明没锁定朝向
         private Quaternion _forceLookAtRotation;
         public Vector3 Velocity => _movementController.LastFrameVelocity;
+
+        private Guid _cachedRotationToken;
         private void Start()
         {
             _movementController = GetComponent<CharacterMovementController>();
@@ -33,7 +35,7 @@ namespace MyProject.Gameplay
                 }
             }
 
-            if (!_movementController.UpdateRotation)
+            if (!_movementController.IsUpdatingRotation)
             {
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, _forceLookAtRotation, 720f * Time.deltaTime);    // 平滑插值，转动Root                
             }
@@ -52,17 +54,18 @@ namespace MyProject.Gameplay
         /// <param name="transform"></param>
         public void TryStartForceLookAt()
         {
-            _movementController.UpdateRotation = false;
+            if (_cachedRotationToken != default) return; // 不要重复上锁
+            _cachedRotationToken = _movementController.EnableUpdateRotation.Register();
             if (StanceCategory == EStanceCategory.run) StanceCategory = EStanceCategory.walk;
         }
         public void TrySetLookAtRotation(Quaternion rotation)
         {
-            if (_movementController.UpdateRotation) return;  // 如果还在UpdateRotation说明没有在锁
+            if (_movementController.IsUpdatingRotation) return;  // 如果还在UpdateRotation说明没有在锁
             _forceLookAtRotation = rotation;
         }
         public void TryStopForceLookAt()
         {
-            _movementController.UpdateRotation = true;
+            _movementController.EnableUpdateRotation.Deregister(ref _cachedRotationToken);
         }
         /// <summary>
         /// 如果没在跑步，就进入跑步状态，并且取消锁定状态；如果已经在跑了，那就变成正常走路。

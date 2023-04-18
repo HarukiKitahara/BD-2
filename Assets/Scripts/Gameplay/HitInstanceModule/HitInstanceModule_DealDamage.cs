@@ -6,7 +6,7 @@ namespace MyProject.Gameplay
 {
     public class HitInstanceModule_DealDamage : IHitInstanceModule
     {
-        public void OnHit(CharacterEntityController characterEntityController)
+        public void OnHit(HitInstanceProperty hitInstanceProperty, CharacterEntityController characterEntityController)
         {
             characterEntityController.AttributeController.Health.TryChangeValue(-10f);
         }

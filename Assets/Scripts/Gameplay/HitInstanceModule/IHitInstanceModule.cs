@@ -6,6 +6,6 @@ namespace MyProject.Gameplay
 {
     public interface IHitInstanceModule
     {
-        public abstract void OnHit(CharacterEntityController characterEntityController);
+        public abstract void OnHit(HitInstanceProperty hitInstanceProperty, CharacterEntityController characterEntityController);
     }
 }
