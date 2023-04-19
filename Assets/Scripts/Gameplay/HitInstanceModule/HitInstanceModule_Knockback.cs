@@ -21,13 +21,13 @@ namespace MyProject.Gameplay
             characterEntityController.ApplyImpluseMomentum(direction * momentumMagnitude);  
 
             // 锁速度、朝向
-            var tokenRotation = characterEntityController.CharacterMovementController.EnableUpdateRotation.Register();
+            var tokenRotation = characterEntityController.CharacterRotationController.LockRotation();
             var tokenVelocity = characterEntityController.CharacterMovementController.CanSetVelocity.Register();
 
             // 解除锁定
             DelayManager.Instance.DelayInvoke(() =>
                 {
-                    characterEntityController.CharacterMovementController.EnableUpdateRotation.Deregister(ref tokenRotation);
+                    characterEntityController.CharacterRotationController.UnlockRotation(ref tokenRotation);
                     characterEntityController.CharacterMovementController.CanSetVelocity.Deregister(ref tokenVelocity);
                 }, duration);
         }

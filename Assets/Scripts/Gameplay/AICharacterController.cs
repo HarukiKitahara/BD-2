@@ -15,7 +15,7 @@ namespace MyProject.Gameplay
         // Update is called once per frame
         void Update()
         {
-            _stanceController.TryKeepMoveDirection(Vector3.forward);
+            _stanceController.SetMoveDirection(Vector3.forward);
         }
     }
 }

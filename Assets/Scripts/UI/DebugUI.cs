@@ -13,9 +13,9 @@ namespace MyProject.UI
         [SerializeField]
         private CharacterStanceController _stanceController;
 
-        private void Update()
-        {
-            _debugText.text = $"Stance: {_stanceController.StanceCategory}\nIsLookingAtTarget: {_stanceController.IsForcingLookingAt}";
-        }
+        //private void Update()
+        //{
+        //    _debugText.text = $"Stance: {_stanceController.StanceCategory}\nIsLookingAtTarget: {_stanceController.IsForcingLookingAt}";
+        //}
     }
 }

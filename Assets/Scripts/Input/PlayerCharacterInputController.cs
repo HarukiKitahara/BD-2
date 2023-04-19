@@ -26,20 +26,20 @@ namespace MyProject.Input
         #region 角色朝向控制
         private void OnLookAtStart(InputAction.CallbackContext obj)
         {
-            if (_stanceController.IsForcingLookingAt)
+            if (_stanceController.IsLookingAt)
             {
-                _stanceController.TryStopForceLookAt();
+                _stanceController.StopLookAtRotation();
                 Debug.Log("取消朝向锁定，不再持续更新朝向");
             }
             else
             {
-                _stanceController.TryStartForceLookAt();
-                Debug.Log("开始朝向锁定，持续更新朝向");
+                LookAtPointerPosition();
+                Debug.Log("开始朝向鼠标位置");
             }
         }
-        private void Update()
+        private void LookAtPointerPosition()
         {
-            if (_stanceController.IsForcingLookingAt) _stanceController.TrySetLookAtRotation(Quaternion.LookRotation(GetLookAtDirection()));
+            _stanceController.SetLookAtRotation(Quaternion.LookRotation(GetLookAtDirection()));
             Vector3 GetLookAtDirection()
             {
                 var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
@@ -55,6 +55,10 @@ namespace MyProject.Input
                 }
             }
         }
+        private void Update()
+        {
+            if (_stanceController.IsLookingAt) LookAtPointerPosition();
+        }
         #endregion
         #region 角色移动控制
         /// <summary>
@@ -68,11 +72,11 @@ namespace MyProject.Input
             var inputDirection = obj.ReadValue<Vector2>();     
             var cameraRotationY = Camera.main.transform.rotation.eulerAngles.y;     
             var moveDirection = Quaternion.Euler(0, cameraRotationY, 0) * new Vector3(inputDirection.x, 0, inputDirection.y);
-            _stanceController.TryKeepMoveDirection(moveDirection);
+            _stanceController.SetMoveDirection(moveDirection);
         }
         private void OnMoveCanceled(InputAction.CallbackContext obj)
         {
-            _stanceController.TryKeepMoveDirection(Vector3.zero);
+            _stanceController.SetMoveDirection(Vector3.zero);
         }
         #endregion
     }

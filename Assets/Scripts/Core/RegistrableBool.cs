@@ -10,10 +10,16 @@ namespace MyProject.Core
     /// </summary>同时发个token，可以此为凭证解除禁令（如果解除后还有其他人上锁了，那还是false）
     public class RegistrableBool
     {
-        public bool Value => tokens.Count == 0;
+        public bool Value => !(tokens.Count == 0 ^ _unregisteredIsTrue);
         public event Action OnValueChanged;
-
         private readonly List<Guid> tokens = new();
+        private bool _unregisteredIsTrue;
+        private RegistrableBool() { }
+        public RegistrableBool(bool unregisteredIsTrue)
+        {
+            _unregisteredIsTrue = unregisteredIsTrue;
+        }
+
         ///<summary>注册即上锁，送你把钥匙token</summary>
         public Guid Register()
         {

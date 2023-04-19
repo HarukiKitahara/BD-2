@@ -12,22 +12,14 @@ namespace MyProject.Gameplay
         private NavMeshAgent _agent;    // 坚决隔离开，不准其他类直接改NavMeshAgent！这样更容易查参数被谁改了，也容易定位Bug。
         public bool IsMoving => LastFrameVelocity.magnitude != 0;      // TODO：后续可能要考虑推挤、击退等“角色不想走，但实际移动了”的情况，目前先统一走NavMeshAgent。
         public Vector3 LastFrameVelocity { get; private set; }      // 用上一帧的数据更稳定一点，防止单帧内脚本执行顺序混乱的情况
-        public bool IsUpdatingRotation { get => _agent.updateRotation; }  // 需要与_agent对话都应该像这样getset
-        public RegistrableBool EnableUpdateRotation { get; private set; }
-        /// <summary>锁住不让改速度，不影响自然衰减和destination导航，也不影响ForceSetVelocity</summary>
         public RegistrableBool CanSetVelocity { get; private set; }
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
             _agent.updateUpAxis = false;
+            _agent.updateRotation = false;
             LastFrameVelocity = Vector3.zero;
-            CanSetVelocity = new();
-            EnableUpdateRotation = new();
-            EnableUpdateRotation.OnValueChanged += () =>
-            {
-                _agent.updateRotation = EnableUpdateRotation.Value;
-                Debug.Log(_agent.updateRotation);
-            };
+            CanSetVelocity = new(true);
         }
         private void LateUpdate() 
         {

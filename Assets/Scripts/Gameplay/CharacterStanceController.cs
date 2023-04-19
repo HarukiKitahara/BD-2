@@ -10,16 +10,15 @@ namespace MyProject.Gameplay
         [SerializeField] private float _walkSpeed = 2f;
         [SerializeField] private float _runSpeed = 4f;
         private CharacterMovementController _movementController;
+        private CharacterRotationController _rotationController;
         private Vector3 _keepMoveDirection;     // 保证要么是zero，要么被normalized
         public EStanceCategory StanceCategory { get; private set; }
-        public bool IsForcingLookingAt => !_movementController.IsUpdatingRotation;  // TODO!!这个逻辑是有问题的，尤其是在击退时！ NavMesh在转，就说明没锁定朝向
-        private Quaternion _forceLookAtRotation;
+        public bool IsLookingAt { get; private set; }
         public Vector3 Velocity => _movementController.LastFrameVelocity;
-
-        private Guid _cachedRotationToken;
         private void Start()
         {
             _movementController = GetComponent<CharacterMovementController>();
+            _rotationController = GetComponent<CharacterRotationController>();
         }
         private void Update()
         {
@@ -34,38 +33,37 @@ namespace MyProject.Gameplay
                     _movementController.SetVelocity(_keepMoveDirection.normalized * _walkSpeed);
                 }
             }
-
-            if (!_movementController.IsUpdatingRotation)
-            {
-                transform.rotation = Quaternion.RotateTowards(transform.rotation, _forceLookAtRotation, 720f * Time.deltaTime);    // 平滑插值，转动Root                
-            }
         }
         /// <summary>
         /// 一旦设定，就会尝试保持速度方向，直到direction设为zero，不改变Stance
         /// </summary>
         /// <param name="direction"></param>
-        public void TryKeepMoveDirection(Vector3 direction)
+        public void SetMoveDirection(Vector3 direction)
         {
-            _keepMoveDirection = (direction == Vector3.zero) ? Vector3.zero : direction.normalized;
+            if (direction == Vector3.zero)
+            {
+                ResetMoveDirection();
+                return;
+            }
+            _keepMoveDirection = direction.normalized;
+            if (!IsLookingAt) _rotationController.SetDesiredRotation(direction);
         }
-        /// <summary>
-        /// 开始锁定目标，会取消run状态
-        /// </summary>
-        /// <param name="transform"></param>
-        public void TryStartForceLookAt()
+        public void ResetMoveDirection()
         {
-            if (_cachedRotationToken != default) return; // 不要重复上锁
-            _cachedRotationToken = _movementController.EnableUpdateRotation.Register();
-            if (StanceCategory == EStanceCategory.run) StanceCategory = EStanceCategory.walk;
+            _keepMoveDirection = Vector3.zero;
+            if (!IsLookingAt) _rotationController.ResetDesiredRotation();
         }
-        public void TrySetLookAtRotation(Quaternion rotation)
+        // 外部输入朝向，设置DesiredRotation并退出跑步姿态
+        public void SetLookAtRotation(Quaternion rotation)
         {
-            if (_movementController.IsUpdatingRotation) return;  // 如果还在UpdateRotation说明没有在锁
-            _forceLookAtRotation = rotation;
+            if (StanceCategory == EStanceCategory.run) StanceCategory = EStanceCategory.walk;   // 想要东张西望就不能跑步
+            _rotationController.SetDesiredRotation(rotation);
+            IsLookingAt = true;
         }
-        public void TryStopForceLookAt()
+        public void StopLookAtRotation()
         {
-            _movementController.EnableUpdateRotation.Deregister(ref _cachedRotationToken);
+            _rotationController.ResetDesiredRotation();
+            IsLookingAt = false;
         }
         /// <summary>
         /// 如果没在跑步，就进入跑步状态，并且取消锁定状态；如果已经在跑了，那就变成正常走路。
@@ -79,7 +77,7 @@ namespace MyProject.Gameplay
             else
             {
                 StanceCategory = EStanceCategory.run;
-                if (IsForcingLookingAt) TryStopForceLookAt();
+                if (IsLookingAt) StopLookAtRotation();  // 切到跑步状态就不能再东张西望了
             }
         }
     }

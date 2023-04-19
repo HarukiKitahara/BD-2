@@ -11,6 +11,7 @@ namespace MyProject.Gameplay
     {
         private HurtEventHandler _hurtEventHandler;
         public CharacterMovementController CharacterMovementController { get; private set; }
+        public CharacterRotationController CharacterRotationController { get; private set; }
         public CharacterAttributeController AttributeController { get; private set; }
         //public CharacterStanceController CharacterStanceController { get; private set; }
         private void Start()
@@ -18,6 +19,7 @@ namespace MyProject.Gameplay
             _hurtEventHandler = new HurtEventHandler(this);
             AttributeController = GetComponent<CharacterAttributeController>();
             CharacterMovementController = GetComponent<CharacterMovementController>();
+            CharacterRotationController = GetComponent<CharacterRotationController>();
             //CharacterStanceController = GetComponent<CharacterStanceController>();
         }
         private void OnTriggerStay(Collider other)
