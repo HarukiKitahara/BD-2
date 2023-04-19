@@ -26,6 +26,9 @@ namespace MyProject.Gameplay
                 transform.rotation = Quaternion.RotateTowards(transform.rotation, DesiredRotation, _angularSpeed * Time.deltaTime);    // 平滑插值，转动Root
             }
         }
+        /// <summary>
+        /// 瞬间锁定朝向，不再根据DesiredRotation更新朝向，但是可以被其他LockRotation覆盖
+        /// </summary>
         public Guid LockRotation(Quaternion rotation)
         {
             transform.rotation = rotation;
@@ -39,6 +42,10 @@ namespace MyProject.Gameplay
         {
             _isRotationLocked.Deregister(ref token);
         }
+        /// <summary>
+        /// 设置理想朝向，受角速度限制
+        /// </summary>
+        /// <param name="quaternion"></param>
         public void SetDesiredRotation(Quaternion quaternion)
         {
             _isDesiredRotationEnabled = true;
