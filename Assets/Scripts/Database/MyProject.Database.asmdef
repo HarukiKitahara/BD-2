@@ -1,0 +1,16 @@
+{
+    "name": "MyProject.Database",
+    "rootNamespace": "MyProject.Database",
+    "references": [
+        "GUID:267c1f8739a8ac94ab663d0333bb4718"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

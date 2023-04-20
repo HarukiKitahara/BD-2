@@ -22,7 +22,7 @@ namespace MyProject.Core
                     instance = GameObject.FindObjectOfType<T>();
                     if (instance == null)
                     {
-                        GameObject go = new GameObject(typeof(T).ToString());
+                        GameObject go = new(typeof(T).ToString());
                         instance = go.AddComponent<T>();
                         Debug.Log($"场景里没有{typeof(T)}单例，但还是尝试调用，现已自动生成。");
                     }
@@ -35,7 +35,7 @@ namespace MyProject.Core
         {
             if (instance == null)
             {
-                instance = GameObject.FindObjectOfType<T>();
+                instance = FindObjectOfType<T>();
             }
             //DontDestroyOnLoad(gameObject);
             InitOnAwake();
