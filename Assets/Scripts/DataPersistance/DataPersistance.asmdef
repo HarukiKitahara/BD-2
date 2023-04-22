@@ -1,11 +1,10 @@
 {
-    "name": "MyProject.Gameplay",
-    "rootNamespace": "MyProject.Gameplay",
+    "name": "MyProject.DataPersistance",
+    "rootNamespace": "MyProject.DataPersistance",
     "references": [
-        "GUID:4307f53044263cf4b835bd812fc161a4",
         "GUID:267c1f8739a8ac94ab663d0333bb4718",
         "GUID:f8b1e5eadf9135a41a2f95dd2a71a3d3",
-        "GUID:12acda11349480f4a861c2636dd55edf"
+        "GUID:5aefb4b4cf730b6488a166105841ce4b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

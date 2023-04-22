@@ -2,8 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
+using MyProject.Database;
 namespace MyProject.Gameplay
 {
+    /// <summary>
+    /// ±³°üµÄÊµÀý
+    /// </summary>
     public class Inventory
     {
         public float Capacity { get; private set; }

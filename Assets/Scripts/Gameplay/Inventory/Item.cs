@@ -1,9 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using MyProject.Database;
 namespace MyProject.Gameplay
 {
+    /// <summary>
+    /// 道具的实例
+    /// </summary>
     public class Item
     {
         public ItemDatabaseAsset Data { get; private set; }

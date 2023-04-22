@@ -12,30 +12,30 @@ namespace MyProject.Core
     /// </summary>
     public abstract class MonoBehaviourSingletonBase<T> : MonoBehaviour where T : MonoBehaviour
     {
-        private static T instance;
+        private static T _instance;
         public static T Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = GameObject.FindObjectOfType<T>();
-                    if (instance == null)
+                    _instance = GameObject.FindObjectOfType<T>();
+                    if (_instance == null)
                     {
                         GameObject go = new(typeof(T).ToString());
-                        instance = go.AddComponent<T>();
+                        _instance = go.AddComponent<T>();
                         Debug.Log($"场景里没有{typeof(T)}单例，但还是尝试调用，现已自动生成。");
                     }
                 }
-                return instance;
+                return _instance;
             }
         }
 
         protected virtual void Awake()
         {
-            if (instance == null)
+            if (_instance == null)
             {
-                instance = FindObjectOfType<T>();
+                _instance = FindObjectOfType<T>();
             }
             //DontDestroyOnLoad(gameObject);
             InitOnAwake();

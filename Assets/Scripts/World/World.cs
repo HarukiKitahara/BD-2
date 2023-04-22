@@ -9,20 +9,36 @@ using MyProject.Utils;
 
 namespace MyProject.World
 {
+    [Serializable]
+    public class WorldDataPersistace
+    {
+        public int length;
+        public int seaLevel;
+        public WorldTileDataPersistance[] worldTileDataPersistances;
+        public WorldDataPersistace(int length, int seaLevel, WorldTileDataPersistance[] worldTileDataPersistances)
+        {
+            this.length = length;
+            this.seaLevel = seaLevel;
+            this.worldTileDataPersistances = worldTileDataPersistances;
+        }
+    }
     public class World
     {
+        private const int MAX_LENGTH = 512;     // 太大了内存会炸
         public readonly int length;     // 正方形边长
-        public readonly int tileCount;  // 总格子数
-        private const int MAX_LENGTH = 512;
-        public readonly WorldTile[] worldTiles;     // 【学到虚脱】一维数组大法好，可以用Linq的各种拓展方法。
+        public readonly int tileCount;  // 总格子数。只是不想每次重算，所以就缓存下来
         public readonly int seaLevel;
-
+        public readonly WorldTile[] worldTiles;     // 【学到虚脱】一维数组大法好，可以用Linq的各种拓展方法。
         public World(int length, int seaLevel)
         {
             this.length = (length > MAX_LENGTH) ? MAX_LENGTH : length;
             tileCount = this.length * this.length;
-            worldTiles = new WorldTile[tileCount];
             this.seaLevel = seaLevel;
+            worldTiles = new WorldTile[tileCount];  // 不负责世界生成，要外部控制生成时机以及是否读档
+        }
+        public World(WorldDataPersistace worldDataPersistace) : this(worldDataPersistace.length, worldDataPersistace.seaLevel) 
+        {
+            IterateAllCoordinates(index => worldTiles[index] = new WorldTile(worldDataPersistace.worldTileDataPersistances[index])); 
         }
 
         /// <summary>
@@ -56,11 +72,17 @@ namespace MyProject.World
         public WorldTile GetWorldTileAt(int x, int y)
         {
             if (!IsValidCoordinate(x, y)) return null;
-            return worldTiles[GetTileIndexByCoordinates(x, y)];
+            return worldTiles[GetIndexAt(x, y)];
         }
-        public int GetTileIndexByCoordinates(int x, int y)
+        public int GetIndexAt(int x, int y)
         {
             return x + y * length;
+        }
+        public WorldDataPersistace DoDataPersistance()
+        {
+            var worldTileDataPersistances = new WorldTileDataPersistance[tileCount];
+            IterateAllCoordinates(index => worldTileDataPersistances[index] = worldTiles[index].DoDataPersistance());
+            return new WorldDataPersistace(length, seaLevel, worldTileDataPersistances);
         }
     }
 }

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace MyProject.Gameplay
+namespace MyProject.Database
 {
     [CreateAssetMenu(fileName = "ItemDatabaseAsset_DEFAULT", menuName = "MyDatabase/Item")]
     public class ItemDatabaseAsset : ScriptableObject

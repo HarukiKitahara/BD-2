@@ -12,17 +12,17 @@ namespace MyProject.Core
     /// </summary>
     public abstract class SingletonBase<T> where T : class, new()
     {
-        private static T instance;
+        private static T _instance;
         public static T Instance
         {
             get
             {
-                if (instance == null)
+                if (_instance == null)
                 {
-                    instance = new T();
+                    _instance = new T();
                     Debug.Log($"没有{typeof(T)}单例，但还是尝试调用，现已自动生成。");
                 }
-                return instance;
+                return _instance;
             }
         }
     }
