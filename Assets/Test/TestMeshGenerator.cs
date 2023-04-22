@@ -17,9 +17,10 @@ namespace MyProject.Unmanaged
         void Start()
         {
             _meshFilter = GetComponent<MeshFilter>();
-            GenerateMesh();
+            //_meshFilter.mesh = GetCubeMesh();
+            _meshFilter.mesh = GetRepeatingPlaneMesh();
         }
-        private void GenerateMesh()
+        private Mesh GetCubeMesh()
         {
             Mesh mesh = new();
             Vector3[] vertices = new Vector3[]
@@ -106,8 +107,48 @@ namespace MyProject.Unmanaged
             int[] indices = new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23 };
             mesh.SetIndices(indices, MeshTopology.Quads, 0);
             mesh.RecalculateNormals();
+            return mesh;
+        }
+        /*
+         * 7654
+         * 0123
+         */
+        private Mesh GetRepeatingPlaneMesh()
+        {
+            Mesh mesh = new();
+            Vector3[] vertices = new Vector3[]
+            {
+                new Vector3(0,0,0),
+                new Vector3(1,0,0),
+                new Vector3(2,0,0),
+                new Vector3(3,0,0),
 
-            _meshFilter.mesh = mesh;
+                new Vector3(3,0,1),
+                new Vector3(2,0,1),
+                new Vector3(1,0,1),
+                new Vector3(0,0,1),
+            };
+            Vector2[] uvs = new Vector2[]
+            {
+                new Vector2(0.25f,0.25f),
+                new Vector2(0.5f,0.25f),
+                new Vector2(0.5f,0.5f),
+                new Vector2(0.25f,0.5f),
+
+                new Vector2(0.25f,0.25f),
+                new Vector2(0.5f,0.25f),
+                new Vector2(0.5f,0.5f),
+                new Vector2(0.25f,0.5f)
+            };
+            int[] triangles = new int[]
+            {
+                0,7,6,0,6,1,2,5,4,2,4,3,1,6,5,1,5,2
+            };
+            mesh.SetVertices(vertices);
+            mesh.SetUVs(0, uvs);
+            mesh.SetTriangles(triangles,0);
+
+            return mesh;
         }
     }
 }

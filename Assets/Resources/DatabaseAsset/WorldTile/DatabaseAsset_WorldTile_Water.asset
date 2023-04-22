@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e932a443d3c5c24bb3e34c08e1739c1, type: 3}
+  m_Name: DatabaseAsset_WorldTile_Water
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Water
+  <Description>k__BackingField: "\u829D\u58EB\u6C34"
+  <SpawnWeight>k__BackingField: 10
+  <TextureInfo>k__BackingField:
+    Up: {x: 7, y: 0}
+    Side: {x: 0, y: 0}
+    RepeatingSide: {x: 0, y: 0}

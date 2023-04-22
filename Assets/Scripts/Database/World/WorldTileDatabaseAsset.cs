@@ -11,5 +11,13 @@ namespace MyProject.Database
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
         [field: SerializeField] public float SpawnWeight { get; private set; }
+        [field: SerializeField] public TextureInfo TextureInfo { get; private set; }
+    }
+    [System.Serializable]
+    public struct TextureInfo
+    {
+        public Vector2Int Up;
+        public Vector2Int Side;
+        public Vector2Int RepeatingSide;
     }
 }
