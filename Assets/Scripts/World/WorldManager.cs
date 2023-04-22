@@ -11,6 +11,7 @@ namespace MyProject.World
         [SerializeField] private int _seaLevel = 20;
         [SerializeField] private int _maxAltitude = 50;
         [SerializeField] private float _noiseScale = 0.05f;
+        [SerializeField] private float _edgeRatio = 0.1f;
         public World World { get; private set; }
         public WorldMeshData WorldMeshData { get; private set; }
         private VoxelMeshRenderer _voxelMeshRenderer;
@@ -20,12 +21,13 @@ namespace MyProject.World
             World = new World(_size, _seaLevel);
             //Debug.Log(World.worldTiles.Count(o => o.databaseAsset == DatabaseManager.Instance.WorldTileDatabaseAssets[0]));
 
-            WorldGenerator.GenerateWorld(World, _noiseScale, _maxAltitude);
+            WorldGenerator.GenerateWorld(World, _noiseScale, _maxAltitude, _edgeRatio);
 
-            WorldMeshData = new WorldMeshData(WorldMeshGenerator.GenerateWorldMesh(World), WorldMeshGenerator.GenerateWaterMesh(World));
+            WorldMeshData = WorldMeshGenerator.GenerateWorldMesh(World);
 
             _voxelMeshRenderer = GetComponent<VoxelMeshRenderer>();
-            _voxelMeshRenderer.RenderVoxelMesh(WorldMeshData.mainMesh);
+            //_voxelMeshRenderer.RenderVoxelMesh(WorldMeshData.mainMesh);
+            _voxelMeshRenderer.RenderWorldMesh(WorldMeshData);
         }
     }
 }

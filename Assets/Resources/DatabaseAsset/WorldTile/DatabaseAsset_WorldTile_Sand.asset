@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e932a443d3c5c24bb3e34c08e1739c1, type: 3}
-  m_Name: DatabaseAsset_WorldTile_Stone
+  m_Name: DatabaseAsset_WorldTile_Sand
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Stone
-  <Description>k__BackingField: "\u829D\u58EB\u77F3\u5934"
+  <Name>k__BackingField: Sand
+  <Description>k__BackingField: "\u829D\u58EB\u6C99\u5B50"
   <SpawnWeight>k__BackingField: 10
   <TextureInfo>k__BackingField:
-    Up: {x: 5, y: 0}
-    Side: {x: 3, y: 5}
-    RepeatingSide: {x: 3, y: 5}
+    Up: {x: 7, y: 3}
+    Side: {x: 3, y: 3}
+    RepeatingSide: {x: 3, y: 3}

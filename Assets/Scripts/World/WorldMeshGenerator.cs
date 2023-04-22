@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using MyProject.Database;
 namespace MyProject.World
 {
     /// <summary>
@@ -9,16 +9,23 @@ namespace MyProject.World
     /// </summary>
     public static class WorldMeshGenerator
     {
-        public static VoxelMeshData GenerateWorldMesh(World world)
+        public static WorldMeshData GenerateWorldMesh(World world)
         {
-            var voxelMeshData = new VoxelMeshData();
+            var mainMeshData = new VoxelMeshData();
+            var waterMeshData = new VoxelMeshData();
             world.IterateAllCoordinates(AddWorldTileToVoxelMeshData);
-            return voxelMeshData;
+            return new WorldMeshData(mainMeshData, waterMeshData);
 
             void AddWorldTileToVoxelMeshData(int x, int y)
             {
                 var tile = world.GetWorldTileAt(x, y);
-                voxelMeshData.AddVoxelSurface(new Vector3(x, tile.altitude, y), tile.databaseAsset.TextureInfo.Up, 10, EVoxelSurface.up);
+                mainMeshData.AddVoxelSurface(new Vector3(x, tile.altitude, y), tile.databaseAsset.TextureInfo.Up, 10, EVoxelSurface.up);
+
+                // 生成水面SubMesh
+                if (tile.altitude < world.seaLevel)
+                {
+                    waterMeshData.AddVoxelSurface(new Vector3(x, world.seaLevel - 0.2f, y), DatabaseManager.Instance.waterDatabaseAssets.TextureInfo.Up, 10, EVoxelSurface.up);
+                }
 
                 AddFullSufaceToVoxelMeshData(world.GetWorldTileAt(x - 1, y), EVoxelSurface.left);
                 AddFullSufaceToVoxelMeshData(world.GetWorldTileAt(x, y + 1), EVoxelSurface.forward);
@@ -30,27 +37,23 @@ namespace MyProject.World
                     if (tile.altitude <= 0) return;
                     if (neighbourTile == null) 
                     {
-                        voxelMeshData.AddVoxelSurface(new Vector3(x, tile.altitude, y), tile.databaseAsset.TextureInfo.Side, 10, surface);
+                        mainMeshData.AddVoxelSurface(new Vector3(x, tile.altitude, y), tile.databaseAsset.TextureInfo.Side, 10, surface);
                         for (int i = 1; i < tile.altitude; i++)
                         {
-                            voxelMeshData.AddVoxelSurface(new Vector3(x, tile.altitude - i, y), tile.databaseAsset.TextureInfo.RepeatingSide, 10, surface);
+                            mainMeshData.AddVoxelSurface(new Vector3(x, tile.altitude - i, y), tile.databaseAsset.TextureInfo.RepeatingSide, 10, surface);
                         }
                     }
                     else if(neighbourTile.altitude < tile.altitude)
                     {
-                        voxelMeshData.AddVoxelSurface(new Vector3(x, tile.altitude, y), tile.databaseAsset.TextureInfo.Side, 10, surface);
+                        mainMeshData.AddVoxelSurface(new Vector3(x, tile.altitude, y), tile.databaseAsset.TextureInfo.Side, 10, surface);
                         
                         for (int i = 1; i < tile.altitude - neighbourTile.altitude; i++)
                         {
-                            voxelMeshData.AddVoxelSurface(new Vector3(x, tile.altitude - i, y), tile.databaseAsset.TextureInfo.RepeatingSide, 10, surface);
+                            mainMeshData.AddVoxelSurface(new Vector3(x, tile.altitude - i, y), tile.databaseAsset.TextureInfo.RepeatingSide, 10, surface);
                         }
                     }
                 }
             }
-        }
-        public static VoxelMeshData GenerateWaterMesh(World world)
-        {
-            return null;
         }
     }
 }

@@ -23,6 +23,11 @@ namespace MyProject.World
     /// </summary>
     public class VoxelMeshData
     {
+        public const float UV_OFFSET = 0.005f;    // 狗屎，不加这个小偏移的话，最终效果会有“接缝”，所以得多取样一点点
+        public static Vector2 uvOffset0 = new Vector2(+UV_OFFSET, +UV_OFFSET);
+        public static Vector2 uvOffset1 = new Vector2(+UV_OFFSET, -UV_OFFSET);
+        public static Vector2 uvOffset2 = new Vector2(-UV_OFFSET, -UV_OFFSET);
+        public static Vector2 uvOffset3 = new Vector2(-UV_OFFSET, +UV_OFFSET);
         public readonly List<Vector3> vertices = new();
         public readonly List<int> triangles = new();
         public readonly List<Vector2> uv = new();
@@ -67,10 +72,10 @@ namespace MyProject.World
                         voxelOrigin + new Vector3(1, 1, 1),
                         voxelOrigin + new Vector3(1, 1, 0),
 
-                        uvIndexToCalculate / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate
+                        uvIndexToCalculate / uvSizeToCalculate + uvOffset0,
+                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate + uvOffset1,
+                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate + uvOffset2,
+                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate + uvOffset3
                         );
                     break;
                 case EVoxelSurface.left:
@@ -80,10 +85,10 @@ namespace MyProject.World
                         voxelOrigin + new Vector3(0, 1, 0),
                         voxelOrigin + new Vector3(0, 0, 0),
 
-                        uvIndexToCalculate / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate
+                        uvIndexToCalculate / uvSizeToCalculate + uvOffset0,
+                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate + uvOffset1,
+                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate + uvOffset2,
+                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate + uvOffset3
                         );
                     break;
                 case EVoxelSurface.forward:
@@ -93,10 +98,10 @@ namespace MyProject.World
                         voxelOrigin + new Vector3(0, 1, 1),
                         voxelOrigin + new Vector3(0, 0, 1),
 
-                        uvIndexToCalculate / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate
+                        uvIndexToCalculate / uvSizeToCalculate + uvOffset0,
+                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate + uvOffset1,
+                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate + uvOffset2,
+                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate + uvOffset3
                         );
                     break;
                 case EVoxelSurface.right:
@@ -106,10 +111,10 @@ namespace MyProject.World
                         voxelOrigin + new Vector3(1, 1, 1),
                         voxelOrigin + new Vector3(1, 0, 1),
 
-                        uvIndexToCalculate / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate
+                        uvIndexToCalculate / uvSizeToCalculate + uvOffset0,
+                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate + uvOffset1,
+                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate + uvOffset2,
+                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate + uvOffset3
                         );
                     break;
                 case EVoxelSurface.back:
@@ -119,10 +124,10 @@ namespace MyProject.World
                         voxelOrigin + new Vector3(1, 1, 0),
                         voxelOrigin + new Vector3(1, 0, 0),
 
-                        uvIndexToCalculate / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate,
-                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate
+                        uvIndexToCalculate / uvSizeToCalculate + uvOffset0,
+                        (uvIndexToCalculate + new Vector2Int(0, 1)) / uvSizeToCalculate + uvOffset1,
+                        (uvIndexToCalculate + new Vector2Int(1, 1)) / uvSizeToCalculate + uvOffset2,
+                        (uvIndexToCalculate + new Vector2Int(1, 0)) / uvSizeToCalculate + uvOffset3
                         );
                     break;
                 default:

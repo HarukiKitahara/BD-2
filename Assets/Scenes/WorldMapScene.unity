@@ -236,7 +236,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &914805618
 GameObject:
@@ -315,14 +315,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 914805618}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalRotation: {x: 0.12802391, y: 0.3148908, z: -0.042910744, w: 0.9394745}
+  m_LocalPosition: {x: 0.83, y: 27.7, z: -8.9}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 15.52, y: 37.06, z: 0}
 --- !u!114 &914805622
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,8 +387,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   worldTileDatabaseAssets:
   - {fileID: 11400000, guid: 93e1c37bab1ade240a322e6cd06a0391, type: 2}
-  - {fileID: 11400000, guid: 5447c789280c6a44c875726a64cb4832, type: 2}
-  waterDatabaseAssets: {fileID: 0}
+  - {fileID: 11400000, guid: 3aff1801d7d399c4f9168dbd75e4bf76, type: 2}
+  - {fileID: 11400000, guid: 48a00edf72ff95b41b6cb006fb8e64be, type: 2}
+  waterDatabaseAssets: {fileID: 11400000, guid: ba15af3ec108f9947987e87f91dc8e63,
+    type: 2}
 --- !u!4 &1383044441
 Transform:
   m_ObjectHideFlags: 0
@@ -402,7 +404,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1404856239
 GameObject:
@@ -419,7 +421,7 @@ GameObject:
   - component: {fileID: 1404856240}
   - component: {fileID: 1404856245}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: WorldMesh
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -472,6 +474,7 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 75dc0e6f34f99984db2cd003337674aa, type: 2}
+  - {fileID: 2100000, guid: e4a65fa84cad4114fb7868aa9259ab17, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -514,7 +517,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1404856245
 MonoBehaviour:
@@ -528,38 +531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f5e52437d598249bd531b41d2d918c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: 100
+  _size: 256
   _seaLevel: 20
   _maxAltitude: 50
-  _noiseScale: 0.05
---- !u!1 &1773468952
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1773468953}
-  m_Layer: 0
-  m_Name: WorldManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1773468953
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773468952}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  _noiseScale: 0.03
+  _edgeRatio: 0.2

@@ -13,7 +13,7 @@ namespace MyProject.World
     {
         public readonly int length;     // 正方形边长
         public readonly int tileCount;  // 总格子数
-        private const int MAX_LENGTH = 128;
+        private const int MAX_LENGTH = 512;
         public readonly WorldTile[] worldTiles;     // 【学到虚脱】一维数组大法好，可以用Linq的各种拓展方法。
         public readonly int seaLevel;
 
