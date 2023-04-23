@@ -5,20 +5,31 @@ using System.Linq;
 using MyProject.Database;
 namespace MyProject.World
 {
+    [System.Serializable]
+    public class WorldManagerDataPersistance
+    {
+        public int playerTileIndex;
+        public WorldDataPersistance worldDataPersistance;
+        public WorldManagerDataPersistance(WorldDataPersistance worldDataPersistance, int playerTileIndex)
+        {
+            this.playerTileIndex = playerTileIndex;
+            this.worldDataPersistance = worldDataPersistance;
+        }
+    }
     /// <summary>
     /// 控制生成世界、渲染世界（没有具体逻辑，主要是调用管理其他类）
     /// </summary>
     public class WorldManager : MonoBehaviour
     {
-        [SerializeField] private int _size = 100;
-        [SerializeField] private int _seaLevel = 20;
-        [SerializeField] private int _maxAltitude = 50;
-        [SerializeField] private float _noiseScale = 0.05f;
-        [SerializeField] private float _edgeRatio = 0.2f;
         public World World { get; private set; }
         public WorldMeshData WorldMeshData { get; private set; }
         private VoxelMeshRenderer _voxelMeshRenderer;
-        
+        [SerializeField]
+        private WorldGenerationDatabaseAsset _worldGenerationDatabaseAsset;
+        [SerializeField]
+        private GameObject _playerCharacterPrefab;
+        private int _playerTileIndex;
+        private GameObject _playerCharacterGO;
         private void Start()
         {
             _voxelMeshRenderer = GetComponent<VoxelMeshRenderer>();
@@ -29,20 +40,35 @@ namespace MyProject.World
             WorldMeshData = WorldMeshGenerator.GenerateWorldMesh(World);
             _voxelMeshRenderer.RenderWorldMesh(WorldMeshData);
         }
+        /// <summary> 随机新世界，并且刷新角色 </summary>
         public void NewWorld()
         {
-            World = new World(_size, _seaLevel);
-            WorldGenerator.GenerateWorld(World, _noiseScale, _maxAltitude, _edgeRatio);
+            World = WorldGenerator.GenerateWorld(_worldGenerationDatabaseAsset);
+            _playerTileIndex = World.GetRandomTileIndexAboveSeaLevel();
+            SpawnCharacterAtTileIndex(_playerTileIndex);
             RenderWorld();
         }
-        public void LoadWorld(WorldDataPersistace worldDataPersistace)
+        public void LoadWorld(WorldManagerDataPersistance worldManagerDataPersistace)
         {
-            World = new World(worldDataPersistace);
+            World = new World(worldManagerDataPersistace.worldDataPersistance);
+            LoadCharacter(worldManagerDataPersistace.playerTileIndex);
             RenderWorld();
         }
-        public WorldDataPersistace SaveWorld()
+        public WorldManagerDataPersistance SaveWorld()
         {
-            return World.DoDataPersistance();
+            return new WorldManagerDataPersistance(World.DoDataPersistance(), _playerTileIndex);
+        }
+        /// <summary> 在指定tileIndex刷新角色 </summary>
+        private void SpawnCharacterAtTileIndex(int tileIndex)
+        {
+            Destroy(_playerCharacterGO);    // 先杀掉已有的角色，防止刷重了
+            _playerCharacterGO = Instantiate(_playerCharacterPrefab,
+                World.GetTileGroundCenterPositionByIndex(tileIndex), 
+                Quaternion.identity);
+        }
+        private void LoadCharacter(int playerTileIndex)
+        {
+            SpawnCharacterAtTileIndex(playerTileIndex);
         }
     }
 }

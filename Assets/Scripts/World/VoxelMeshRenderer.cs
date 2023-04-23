@@ -10,12 +10,15 @@ namespace MyProject.World
     /// </summary>
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
+    [RequireComponent(typeof(MeshCollider))]
     public class VoxelMeshRenderer : MonoBehaviour
     {
         private MeshFilter _meshFilter;
+        private MeshCollider _meshCollider;
         private void Start()
         {
             _meshFilter = GetComponent<MeshFilter>();
+            _meshCollider = GetComponent<MeshCollider>();
         }
         public void RenderWorldMesh(WorldMeshData worldMeshData)
         {
@@ -33,6 +36,14 @@ namespace MyProject.World
 
             mesh.RecalculateNormals();
             _meshFilter.mesh = mesh;
+
+
+            Mesh collisionMesh = new();
+            collisionMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+            collisionMesh.vertices = worldMeshData.mainMesh.vertices.ToArray();
+            collisionMesh.triangles = worldMeshData.mainMesh.triangles.ToArray();
+            collisionMesh.RecalculateNormals();
+            _meshCollider.sharedMesh = collisionMesh;
         }
         
         //public void RenderVoxelMesh(VoxelMeshData voxelMeshData)

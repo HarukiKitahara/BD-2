@@ -22,7 +22,7 @@ namespace MyProject.DataPersistance
         {
             _gameData = new GameData();
             //gameData.siteData = MainSceneManager.Instance.site.SaveData();
-            _gameData.worldDataPersistace = _worldManager.SaveWorld();
+            _gameData.worldManagerDataPersistace = _worldManager.SaveWorld();
             _fileDataHandler.Save(_gameData);
         }
         public void LoadGame()
@@ -37,7 +37,7 @@ namespace MyProject.DataPersistance
                 Debug.LogWarning("没有有效存档，开始新游戏");
                 return false;
             }
-            _worldManager.LoadWorld(_gameData.worldDataPersistace);
+            _worldManager.LoadWorld(_gameData.worldManagerDataPersistace);
             return true;
         }
     }

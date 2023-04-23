@@ -10,12 +10,12 @@ using MyProject.Utils;
 namespace MyProject.World
 {
     [Serializable]
-    public class WorldDataPersistace
+    public class WorldDataPersistance
     {
         public int length;
         public int seaLevel;
         public WorldTileDataPersistance[] worldTileDataPersistances;
-        public WorldDataPersistace(int length, int seaLevel, WorldTileDataPersistance[] worldTileDataPersistances)
+        public WorldDataPersistance(int length, int seaLevel, WorldTileDataPersistance[] worldTileDataPersistances)
         {
             this.length = length;
             this.seaLevel = seaLevel;
@@ -36,7 +36,7 @@ namespace MyProject.World
             this.seaLevel = seaLevel;
             worldTiles = new WorldTile[tileCount];  // 不负责世界生成，要外部控制生成时机以及是否读档
         }
-        public World(WorldDataPersistace worldDataPersistace) : this(worldDataPersistace.length, worldDataPersistace.seaLevel) 
+        public World(WorldDataPersistance worldDataPersistace) : this(worldDataPersistace.length, worldDataPersistace.seaLevel) 
         {
             IterateAllCoordinates(index => worldTiles[index] = new WorldTile(worldDataPersistace.worldTileDataPersistances[index])); 
         }
@@ -78,11 +78,41 @@ namespace MyProject.World
         {
             return x + y * length;
         }
-        public WorldDataPersistace DoDataPersistance()
+        public (int, int) GetCoordinateByIndex(int index)
+        {
+            return (index % length, index / length);
+        }
+        public WorldDataPersistance DoDataPersistance()
         {
             var worldTileDataPersistances = new WorldTileDataPersistance[tileCount];
             IterateAllCoordinates(index => worldTileDataPersistances[index] = worldTiles[index].DoDataPersistance());
-            return new WorldDataPersistace(length, seaLevel, worldTileDataPersistances);
+            return new WorldDataPersistance(length, seaLevel, worldTileDataPersistances);
+        }
+        /// <summary> 随机获得一个海平面以上的地块 </summary>
+        public int GetRandomTileIndexAboveSeaLevel()
+        {
+            var ans = IterateWithRandomStartIndexAndBreatCondition(index => worldTiles[index].altitude >= seaLevel);
+            if (ans == -1) throw new Exception("世界、沉没了！");
+            return ans;
+        }
+        /// <summary> 含退出条件的随机起点遍历 </summary>
+        /// <param name="predicate">返回true就退出</param>
+        public int IterateWithRandomStartIndexAndBreatCondition(Func<int, bool> predicate)
+        {
+            var randomIndex = Random.Range(0, tileCount);
+            var randomDirection = Random.value < 0.5f ? -1 : 1;
+            var currentIndex = randomIndex;
+            do
+            {
+                if (predicate.Invoke(randomIndex)) return randomIndex;
+                randomIndex = (randomIndex + randomDirection) % tileCount;
+            } while (currentIndex != randomIndex);
+            return -1;
+        }
+        public Vector3 GetTileGroundCenterPositionByIndex(int index)
+        {
+            var Coord = GetCoordinateByIndex(index);
+            return new Vector3(Coord.Item1 + 0.5f, worldTiles[index].altitude + 0.5f, Coord.Item2 + 0.5f);
         }
     }
 }

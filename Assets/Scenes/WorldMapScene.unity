@@ -1049,11 +1049,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f5e52437d598249bd531b41d2d918c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _size: 256
-  _seaLevel: 20
-  _maxAltitude: 50
-  _noiseScale: 0.03
-  _edgeRatio: 0.2
+  _worldGenerationDatabaseAsset: {fileID: 11400000, guid: 0ce50d70f5468644a9fbf42b4a8e39ad,
+    type: 2}
+  _playerCharacterPrefab: {fileID: 3010638305114352779, guid: fa159ed076c894949bbf4c263f57355b,
+    type: 3}
 --- !u!1 &1501761619
 GameObject:
   m_ObjectHideFlags: 0
