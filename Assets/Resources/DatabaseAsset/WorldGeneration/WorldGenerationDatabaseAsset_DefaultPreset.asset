@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 014438d59d44aa44baf55b983682d775, type: 3}
   m_Name: WorldGenerationDatabaseAsset_DefaultPreset
   m_EditorClassIdentifier: 
-  _size: 512
-  _seaLevel: 20
-  _maxAltitude: 50
+  _size: 256
+  _seaLevel: 2
+  _maxAltitude: 5
   _noiseScale: 0.05
   _edgeRatio: 0.2

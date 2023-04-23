@@ -23,17 +23,18 @@ namespace MyProject.World
     {
         public World World { get; private set; }
         public WorldMeshData WorldMeshData { get; private set; }
+        [SerializeField]
         private VoxelMeshRenderer _voxelMeshRenderer;
         [SerializeField]
         private WorldGenerationDatabaseAsset _worldGenerationDatabaseAsset;
         [SerializeField]
-        private GameObject _playerCharacterPrefab;
+        private GameObject _playerCharacter;
         private int _playerTileIndex;
-        private GameObject _playerCharacterGO;
-        private void Start()
-        {
-            _voxelMeshRenderer = GetComponent<VoxelMeshRenderer>();
-        }
+        //private void Start()
+        //{
+        //    _voxelMeshRenderer = GetComponent<VoxelMeshRenderer>();
+        //    _playerCharacter.SetActive(false);
+        //}
         /// <summary> 计算Mesh、提交渲染一条龙服务 </summary>
         private void RenderWorld()
         {
@@ -61,10 +62,8 @@ namespace MyProject.World
         /// <summary> 在指定tileIndex刷新角色 </summary>
         private void SpawnCharacterAtTileIndex(int tileIndex)
         {
-            Destroy(_playerCharacterGO);    // 先杀掉已有的角色，防止刷重了
-            _playerCharacterGO = Instantiate(_playerCharacterPrefab,
-                World.GetTileGroundCenterPositionByIndex(tileIndex), 
-                Quaternion.identity);
+            _playerCharacter.transform.position = World.GetTileGroundCenterPositionByIndex(tileIndex);
+            _playerCharacter.SetActive(true);
         }
         private void LoadCharacter(int playerTileIndex)
         {

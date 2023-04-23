@@ -3,6 +3,9 @@
     "rootNamespace": "MyProject.Input",
     "references": [
         "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:267c1f8739a8ac94ab663d0333bb4718",
+        "GUID:f8b1e5eadf9135a41a2f95dd2a71a3d3",
+        "GUID:a77a82ff7cd98ae46b87c944a4050b31",
         "GUID:dc6d2de4a8b75d34494b0c72c58b787d"
     ],
     "includePlatforms": [],

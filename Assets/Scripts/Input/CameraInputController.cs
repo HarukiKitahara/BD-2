@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MyProject.Gameplay;
 using UnityEngine.InputSystem;
-using System;
-
+using MyProject.MyCamera;
 namespace MyProject.Input
 {
     public class CameraInputController : MonoBehaviour

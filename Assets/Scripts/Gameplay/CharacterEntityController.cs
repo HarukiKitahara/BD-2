@@ -7,6 +7,7 @@ namespace MyProject.Gameplay
     /// <summary>
     /// 管场景中某个Character全部信息的类，还负责初始化加载
     /// </summary>
+    [SelectionBase]
     public class CharacterEntityController : MonoBehaviour
     {
         private HurtEventHandler _hurtEventHandler;

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using MyProject.Gameplay;
-using System;
-using UnityEngine.Events;
+using MyProject.Utils;
 
 namespace MyProject.Input
 {
@@ -42,7 +41,7 @@ namespace MyProject.Input
             _stanceController.SetLookAtRotation(Quaternion.LookRotation(GetLookAtDirection()));
             Vector3 GetLookAtDirection()
             {
-                var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+                var ray = MyUtils.GetMouseRayAgainstMainCamera();
                 var plane = new Plane(Vector3.up, _stanceController.transform.position);  // TODO: 如果地形有起伏，这个方法就不能用了
                 if (plane.Raycast(ray, out float enter))
                 {
