@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 using MyProject.Database;
 using System;
-
+using MyProject.Core;
 namespace MyProject.World
 {
     [Serializable]
@@ -29,15 +29,14 @@ namespace MyProject.World
         private WorldGenerationDatabaseAsset _worldGenerationDatabaseAsset;
         [SerializeField]
         private GameObject _playerCharacterGO;
+        [SerializeField]
+        private GameObject _SelectionHintGO;
         private WorldCharacterController _playerCharacter;
         public int SelectedTileIndex { get; private set; }
-        public event Action OnTileSelected;
-        public event Action OnTileInteracted;
-        //private void Start()
-        //{
-        //    _voxelMeshRenderer = GetComponent<VoxelMeshRenderer>();
-        //    _playerCharacter.SetActive(false);
-        //}
+        // 一定不可能有多个world在发这种事件，所以一定是static
+        public static event Action OnTileSelected;
+        public static event Action OnTileInteracted;
+        public static event Action OnEnterSite;
         /// <summary> 计算Mesh、提交渲染一条龙服务 </summary>
         private void RenderWorld()
         {
@@ -73,16 +72,33 @@ namespace MyProject.World
             _playerCharacterGO.SetActive(true);
             _playerCharacter = new(World, _playerCharacterGO.transform, dataPersistance);
         }
+        /// <summary> 玩家数选中某个Tile </summary>
         public void SelectTile(int index)
         {
             if (index == SelectedTileIndex) return;
+            _SelectionHintGO.transform.position = World.GetTileOriginPositionByIndex(index);
             SelectedTileIndex = index;
             OnTileSelected?.Invoke();
         }
+        /// <summary> 玩家尝试与某个Tile点击交互 </summary>
         public void InteractTile()
         {
-            _playerCharacter?.MoveTo(SelectedTileIndex);
-            OnTileInteracted?.Invoke();
+            if(_playerCharacter.TileIndex == SelectedTileIndex)
+            {
+                // 弹窗询问是否进入
+                OnTileInteracted?.Invoke();
+            }
+            else
+            {
+                // Move!
+                _playerCharacter?.MoveTo(SelectedTileIndex);
+            }
+        }
+        /// <summary> 进入区域地图 </summary>
+        public void EnterSelectedSite()
+        {
+            OnEnterSite?.Invoke();  // 存档
+            GameManager.Instance.EnterLevelScene();
         }
     }
 }

@@ -13,6 +13,10 @@ namespace MyProject.Core
         }
         public void NewGame()
         {
+            SceneManager.LoadSceneAsync("WorldMapScene");
+        }
+        public void EnterLevelScene()
+        {
             SceneManager.LoadSceneAsync("MyTestScene");
         }
     }

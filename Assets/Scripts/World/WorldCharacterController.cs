@@ -19,8 +19,8 @@ namespace MyProject.World
         private readonly World _world;
         private readonly Transform _transform;
         private readonly WorldCharacterControllerDataPersistance _dataPersistance;
-        private int TileIndex { get => _dataPersistance.tileIndex; set => _dataPersistance.tileIndex = value; }
-        private EDirection Direction { get => _dataPersistance.direction; set => _dataPersistance.direction = value; }
+        public int TileIndex { get => _dataPersistance.tileIndex; private set => _dataPersistance.tileIndex = value; }
+        public EDirection Direction { get => _dataPersistance.direction; private set => _dataPersistance.direction = value; }
         public WorldCharacterController(World world, Transform transform, int tileIndex, EDirection direction = EDirection.north)
         {
             if (world == null || transform == null) throw new System.Exception("µ‹∞¢£¨ƒ„‘ı√¥À¶∏¯Œ“null");

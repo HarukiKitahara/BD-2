@@ -17,6 +17,7 @@ namespace MyProject.DataPersistance
         protected override void InitOnAwake()
         {
             _fileDataHandler = new FileDataHandler(_FILE_NAME, Application.persistentDataPath);
+            WorldManager.OnEnterSite += SaveGame;
         }
         public void SaveGame()
         {

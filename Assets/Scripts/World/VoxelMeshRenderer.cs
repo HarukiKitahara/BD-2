@@ -45,22 +45,5 @@ namespace MyProject.World
             collisionMesh.RecalculateNormals();
             _meshCollider.sharedMesh = collisionMesh;
         }
-        
-        //public void RenderVoxelMesh(VoxelMeshData voxelMeshData)
-        //{
-        //    Mesh mesh = new();
-        //    mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-        //    mesh.Clear();
-        //    mesh.vertices = voxelMeshData.vertices.ToArray();
-        //    mesh.triangles = voxelMeshData.triangles.ToArray();
-        //    mesh.uv = voxelMeshData.uv.ToArray();
-        //    mesh.RecalculateNormals();
-        //    _meshFilter.mesh = mesh;
-        //    //_meshCollider.sharedMesh = null;
-        //    //_colliderMesh.Clear();
-        //    //_colliderMesh.vertices = _voxelMeshData.colliderVertices.ToArray();
-        //    //_colliderMesh.triangles = _voxelMeshData.colliderTriangles.ToArray();
-        //    //_colliderMesh.RecalculateNormals();
-        //}
     }
 }

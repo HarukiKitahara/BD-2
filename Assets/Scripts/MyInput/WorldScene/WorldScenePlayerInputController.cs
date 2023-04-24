@@ -27,16 +27,13 @@ namespace MyProject.MyInput
             {
                 var tileIndex = _worldManager.World.GetIndexByPosition(hit.point);
                 _worldManager.SelectTile(tileIndex);
+                if (Input.GetMouseButtonDown(0)) TryInteract();
             }
-            if (Input.GetMouseButtonDown(0)) TryInteract();
         }
         private void TryInteract()
         {
-            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())     // 【有坑】学到虚脱：InputSystem没法在callback中用这条指令判断是否悬浮在UI上方。
-            {
-                Debug.Log(1);
-                return;
-            }
+            if (UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject()) return;     // 【有坑】学到虚脱：InputSystem没法在callback中用这条指令判断是否悬浮在UI上方。
+
             _worldManager.InteractTile();
         }
     }

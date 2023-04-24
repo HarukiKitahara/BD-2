@@ -38,7 +38,7 @@ namespace MyProject.MyCamera
             var normalizedInput = Mathf.InverseLerp(_data.minAngleForZooming, _data.maxAngleForZooming, _angleForZooming);
             var distance = Mathf.Lerp(_data.minDistanceForZooming, _data.maxDistanceForZooming, _data.angleDistanceCurveForZooming.EvaluateNormalized(normalizedInput));
             _orbitalTransposer.m_FollowOffset = GetFollowOffset(_angleForZooming, distance);
-            Debug.Log($"Angle:{_angleForZooming}, NormalizedInput:{normalizedInput}, Distance:{distance}, Offset:{_orbitalTransposer.m_FollowOffset}");
+            //Debug.Log($"Angle:{_angleForZooming}, NormalizedInput:{normalizedInput}, Distance:{distance}, Offset:{_orbitalTransposer.m_FollowOffset}");
         }
         /// <summary> 输入水平方向夹角和距离，输出摄像机到跟随目标的距离 </summary>
         private Vector3 GetFollowOffset(float angle, float distance)

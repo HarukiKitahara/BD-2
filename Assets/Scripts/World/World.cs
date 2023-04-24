@@ -41,9 +41,7 @@ namespace MyProject.World
             IterateAllCoordinates(index => worldTiles[index] = new WorldTile(worldDataPersistace.worldTileDataPersistances[index])); 
         }
 
-        /// <summary>
-        /// 工具方法，快速遍历所有坐标
-        /// </summary>
+        /// <summary> 工具方法，快速遍历所有坐标 </summary>
         public void IterateAllCoordinates(Action<int,int> action)
         {
             for(int i = 0; i < length; i++)
@@ -113,8 +111,14 @@ namespace MyProject.World
         /// <summary> 获取地块上表面中心点坐标(+0.5, +1, +0.5) </summary>
         public Vector3 GetTileGroundCenterPositionByIndex(int index)
         {
+            var originPosition = GetTileOriginPositionByIndex(index);
+            return new Vector3(originPosition.x + 0.5f, originPosition.y + 1f, originPosition.z + 0.5f);
+        }
+        /// <summary> 获取地块Local原点坐标(0, 0, 0) </summary>
+        public Vector3 GetTileOriginPositionByIndex(int index)
+        {
             var Coord = GetCoordinateByIndex(index);
-            return new Vector3(Coord.Item1 + 0.5f, worldTiles[index].altitude + 1f, Coord.Item2 + 0.5f);
+            return new Vector3(Coord.Item1, worldTiles[index].altitude, Coord.Item2);
         }
         /// <summary> 输入空间坐标，输出打到的地块index </summary>
         public int GetIndexByPosition(Vector3 position)

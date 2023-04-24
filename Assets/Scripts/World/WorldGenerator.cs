@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyProject.Database;
-using MyProject.Utils;
 namespace MyProject.World
 {
     /// <summary>
@@ -25,11 +24,11 @@ namespace MyProject.World
             {
                 var generatedAltitude = GetAltitudeAtCoordinates(x, y);     // 生成海拔
                 int desiredTileID;  // 根据海拔生成地块类型
-                if(generatedAltitude <= world.seaLevel - 3)
+                if (generatedAltitude <= world.seaLevel - 3)
                 {
                     desiredTileID = 2;  // 低于海平面3格就是石头
                 }
-                else if(generatedAltitude >= world.seaLevel)
+                else if (generatedAltitude >= world.seaLevel)
                 {
                     desiredTileID = 0;  // 海平面往上就是草地
                 }
