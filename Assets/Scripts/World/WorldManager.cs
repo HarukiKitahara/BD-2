@@ -3,22 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using MyProject.Database;
+using System;
+
 namespace MyProject.World
 {
-    [System.Serializable]
+    [Serializable]
     public class WorldManagerDataPersistance
     {
-        public int playerTileIndex;
+        public WorldCharacterControllerDataPersistance worldCharacterDataPersistance;
         public WorldDataPersistance worldDataPersistance;
-        public WorldManagerDataPersistance(WorldDataPersistance worldDataPersistance, int playerTileIndex)
+        public WorldManagerDataPersistance(WorldDataPersistance worldDataPersistance, WorldCharacterControllerDataPersistance worldCharacterDataPersistance)
         {
-            this.playerTileIndex = playerTileIndex;
             this.worldDataPersistance = worldDataPersistance;
+            this.worldCharacterDataPersistance = worldCharacterDataPersistance;
         }
     }
-    /// <summary>
-    /// 控制生成世界、渲染世界（没有具体逻辑，主要是调用管理其他类）
-    /// </summary>
+    /// <summary> 控制生成世界、渲染世界（没有具体逻辑，主要是调用管理其他类） </summary>
     public class WorldManager : MonoBehaviour
     {
         public World World { get; private set; }
@@ -28,8 +28,11 @@ namespace MyProject.World
         [SerializeField]
         private WorldGenerationDatabaseAsset _worldGenerationDatabaseAsset;
         [SerializeField]
-        private GameObject _playerCharacter;
-        private int _playerTileIndex;
+        private GameObject _playerCharacterGO;
+        private WorldCharacterController _playerCharacter;
+        public int SelectedTileIndex { get; private set; }
+        public event Action OnTileSelected;
+        public event Action OnTileInteracted;
         //private void Start()
         //{
         //    _voxelMeshRenderer = GetComponent<VoxelMeshRenderer>();
@@ -45,29 +48,41 @@ namespace MyProject.World
         public void NewWorld()
         {
             World = WorldGenerator.GenerateWorld(_worldGenerationDatabaseAsset);
-            _playerTileIndex = World.GetRandomTileIndexAboveSeaLevel();
-            SpawnCharacterAtTileIndex(_playerTileIndex);
+            var playerTileIndex = World.GetRandomTileIndexAboveSeaLevel();
+            SpawnCharacterAtTileIndex(playerTileIndex);
             RenderWorld();
         }
         public void LoadWorld(WorldManagerDataPersistance worldManagerDataPersistace)
         {
             World = new World(worldManagerDataPersistace.worldDataPersistance);
-            LoadCharacter(worldManagerDataPersistace.playerTileIndex);
+            LoadCharacter(worldManagerDataPersistace.worldCharacterDataPersistance);
             RenderWorld();
         }
         public WorldManagerDataPersistance SaveWorld()
         {
-            return new WorldManagerDataPersistance(World.DoDataPersistance(), _playerTileIndex);
+            return new WorldManagerDataPersistance(World.DoDataPersistance(), _playerCharacter.DoDataPersistance());
         }
-        /// <summary> 在指定tileIndex刷新角色 </summary>
+        /// <summary> 在指定tileIndex刷新角色（非读档） </summary>
         private void SpawnCharacterAtTileIndex(int tileIndex)
         {
-            _playerCharacter.transform.position = World.GetTileGroundCenterPositionByIndex(tileIndex);
-            _playerCharacter.SetActive(true);
+            _playerCharacterGO.SetActive(true);
+            _playerCharacter = new(World, _playerCharacterGO.transform, tileIndex);
         }
-        private void LoadCharacter(int playerTileIndex)
+        private void LoadCharacter(WorldCharacterControllerDataPersistance dataPersistance)
         {
-            SpawnCharacterAtTileIndex(playerTileIndex);
+            _playerCharacterGO.SetActive(true);
+            _playerCharacter = new(World, _playerCharacterGO.transform, dataPersistance);
+        }
+        public void SelectTile(int index)
+        {
+            if (index == SelectedTileIndex) return;
+            SelectedTileIndex = index;
+            OnTileSelected?.Invoke();
+        }
+        public void InteractTile()
+        {
+            _playerCharacter?.MoveTo(SelectedTileIndex);
+            OnTileInteracted?.Invoke();
         }
     }
 }

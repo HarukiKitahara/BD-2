@@ -1,4 +1,4 @@
-namespace MyProject.Input
+namespace MyProject.MyInput
 {
     public partial class InputActionAssetSingleton
     {

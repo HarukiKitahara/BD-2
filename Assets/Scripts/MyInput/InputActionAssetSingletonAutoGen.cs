@@ -15,7 +15,7 @@ using System.Collections.Generic;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
 
-namespace MyProject.Input
+namespace MyProject.MyInput
 {
     public partial class @InputActionAssetSingleton: IInputActionCollection2, IDisposable
     {
@@ -69,6 +69,15 @@ namespace MyProject.Input
                     ""name"": ""LookAt"",
                     ""type"": ""Button"",
                     ""id"": ""18904900-7186-4ecb-a3ab-6d3a35b18a2b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Click"",
+                    ""type"": ""Button"",
+                    ""id"": ""63e779b8-fcc6-4297-bdf2-5e4d096ed1b4"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -174,6 +183,17 @@ namespace MyProject.Input
                     ""action"": ""LookAt"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""163390a9-9d92-47ed-a6a6-a357b28e8fe4"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Click"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -187,6 +207,7 @@ namespace MyProject.Input
             m_Gameplay_RotateCamera = m_Gameplay.FindAction("RotateCamera", throwIfNotFound: true);
             m_Gameplay_MovementZoomCamera = m_Gameplay.FindAction("MovementZoomCamera", throwIfNotFound: true);
             m_Gameplay_LookAt = m_Gameplay.FindAction("LookAt", throwIfNotFound: true);
+            m_Gameplay_Click = m_Gameplay.FindAction("Click", throwIfNotFound: true);
         }
 
         public void Dispose()
@@ -253,6 +274,7 @@ namespace MyProject.Input
         private readonly InputAction m_Gameplay_RotateCamera;
         private readonly InputAction m_Gameplay_MovementZoomCamera;
         private readonly InputAction m_Gameplay_LookAt;
+        private readonly InputAction m_Gameplay_Click;
         public struct GameplayActions
         {
             private @InputActionAssetSingleton m_Wrapper;
@@ -262,6 +284,7 @@ namespace MyProject.Input
             public InputAction @RotateCamera => m_Wrapper.m_Gameplay_RotateCamera;
             public InputAction @MovementZoomCamera => m_Wrapper.m_Gameplay_MovementZoomCamera;
             public InputAction @LookAt => m_Wrapper.m_Gameplay_LookAt;
+            public InputAction @Click => m_Wrapper.m_Gameplay_Click;
             public InputActionMap Get() { return m_Wrapper.m_Gameplay; }
             public void Enable() { Get().Enable(); }
             public void Disable() { Get().Disable(); }
@@ -286,6 +309,9 @@ namespace MyProject.Input
                 @LookAt.started += instance.OnLookAt;
                 @LookAt.performed += instance.OnLookAt;
                 @LookAt.canceled += instance.OnLookAt;
+                @Click.started += instance.OnClick;
+                @Click.performed += instance.OnClick;
+                @Click.canceled += instance.OnClick;
             }
 
             private void UnregisterCallbacks(IGameplayActions instance)
@@ -305,6 +331,9 @@ namespace MyProject.Input
                 @LookAt.started -= instance.OnLookAt;
                 @LookAt.performed -= instance.OnLookAt;
                 @LookAt.canceled -= instance.OnLookAt;
+                @Click.started -= instance.OnClick;
+                @Click.performed -= instance.OnClick;
+                @Click.canceled -= instance.OnClick;
             }
 
             public void RemoveCallbacks(IGameplayActions instance)
@@ -329,6 +358,7 @@ namespace MyProject.Input
             void OnRotateCamera(InputAction.CallbackContext context);
             void OnMovementZoomCamera(InputAction.CallbackContext context);
             void OnLookAt(InputAction.CallbackContext context);
+            void OnClick(InputAction.CallbackContext context);
         }
     }
 }

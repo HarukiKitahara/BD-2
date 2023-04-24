@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 using MyProject.Gameplay;
 using MyProject.Utils;
 
-namespace MyProject.Input
+namespace MyProject.MyInput
 {
     public class PlayerCharacterInputController : MonoBehaviour
     {

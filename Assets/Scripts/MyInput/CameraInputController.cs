@@ -4,7 +4,7 @@ using UnityEngine;
 using MyProject.Gameplay;
 using UnityEngine.InputSystem;
 using MyProject.MyCamera;
-namespace MyProject.Input
+namespace MyProject.MyInput
 {
     public class CameraInputController : MonoBehaviour
     {

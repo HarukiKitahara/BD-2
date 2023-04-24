@@ -1,10 +1,13 @@
 {
-    "name": "MyProject.MyCamera",
-    "rootNamespace": "MyProject.MyCamera",
+    "name": "MyProject.MyInput",
+    "rootNamespace": "MyProject.MyInput",
     "references": [
-        "GUID:4307f53044263cf4b835bd812fc161a4",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:267c1f8739a8ac94ab663d0333bb4718",
         "GUID:f8b1e5eadf9135a41a2f95dd2a71a3d3",
-        "GUID:12acda11349480f4a861c2636dd55edf"
+        "GUID:a77a82ff7cd98ae46b87c944a4050b31",
+        "GUID:dc6d2de4a8b75d34494b0c72c58b787d",
+        "GUID:5aefb4b4cf730b6488a166105841ce4b"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

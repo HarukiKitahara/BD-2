@@ -76,6 +76,7 @@ namespace MyProject.World
         }
         public int GetIndexAt(int x, int y)
         {
+            if (!IsValidCoordinate(x, y)) throw new Exception($"坐标越界！World没坐标({x}, {y}), 边长只有{length}");
             return x + y * length;
         }
         public (int, int) GetCoordinateByIndex(int index)
@@ -105,14 +106,20 @@ namespace MyProject.World
             do
             {
                 if (predicate.Invoke(randomIndex)) return randomIndex;
-                randomIndex = (randomIndex + randomDirection) % tileCount;
+                randomIndex = (randomIndex + randomDirection + tileCount) % tileCount;  // 【有坑】学到虚脱：c#负数modulo正数还是负数，有点傻逼
             } while (currentIndex != randomIndex);
             return -1;
         }
+        /// <summary> 获取地块上表面中心点坐标(+0.5, +1, +0.5) </summary>
         public Vector3 GetTileGroundCenterPositionByIndex(int index)
         {
             var Coord = GetCoordinateByIndex(index);
-            return new Vector3(Coord.Item1 + 0.5f, worldTiles[index].altitude + 0.5f, Coord.Item2 + 0.5f);
+            return new Vector3(Coord.Item1 + 0.5f, worldTiles[index].altitude + 1f, Coord.Item2 + 0.5f);
+        }
+        /// <summary> 输入空间坐标，输出打到的地块index </summary>
+        public int GetIndexByPosition(Vector3 position)
+        {
+            return GetIndexAt((int)position.x, (int)position.z);
         }
     }
 }
