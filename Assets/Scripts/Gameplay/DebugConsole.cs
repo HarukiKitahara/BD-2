@@ -12,8 +12,8 @@ namespace MyProject.Gameplay
         }
         public void TestInventory()
         {
-            var item1 = new Item(DatabaseManager.Instance.itemDatabaseAssets[0], 10);
-            var item2 = new Item(DatabaseManager.Instance.itemDatabaseAssets[1], 1);
+            var item1 = new Item(DatabaseManager.Instance.Items.Assets[0], 10);
+            var item2 = new Item(DatabaseManager.Instance.Items.Assets[1], 1);
 
             var inventory = new Inventory(10000);
 

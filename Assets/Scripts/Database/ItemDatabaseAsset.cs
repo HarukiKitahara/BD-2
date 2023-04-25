@@ -5,7 +5,8 @@ using UnityEngine;
 namespace MyProject.Database
 {
     [CreateAssetMenu(fileName = "ItemDatabaseAsset_DEFAULT", menuName = "MyDatabase/Item")]
-    public class ItemDatabaseAsset : ScriptableObject
+    [DatabaseKey("Name")]
+    public class ItemDatabaseAsset : DatabaseAssetBase
     {
         [field: SerializeField] public int ID { get; private set; }
         [field: SerializeField] public string Name { get; private set; }

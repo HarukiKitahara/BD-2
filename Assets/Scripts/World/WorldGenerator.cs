@@ -24,17 +24,17 @@ namespace MyProject.World
             {
                 var generatedAltitude = GetAltitudeAtCoordinates(x, y);     // 生成海拔
                 int desiredTileID;  // 根据海拔生成地块类型
-                if (generatedAltitude <= world.seaLevel - 3)
+                if (generatedAltitude <= world.seaLevel - 1)
                 {
-                    desiredTileID = 2;  // 低于海平面3格就是石头
+                    DatabaseManager.Instance.WorldTiles.TryGetIndexByKey("Stone", out desiredTileID);  // 低于海平面3格就是石头
                 }
-                else if (generatedAltitude >= world.seaLevel)
+                else if (generatedAltitude > world.seaLevel)
                 {
-                    desiredTileID = 0;  // 海平面往上就是草地
+                    DatabaseManager.Instance.WorldTiles.TryGetIndexByKey("Grass", out desiredTileID);  // 海平面往上就是草地
                 }
                 else
                 {
-                    desiredTileID = 1;  // 海平面往下是沙子
+                    DatabaseManager.Instance.WorldTiles.TryGetIndexByKey("Sand", out desiredTileID);  // 海平面往下是沙子
                 }
 
                 var generatedTile = new WorldTile(desiredTileID, generatedAltitude);

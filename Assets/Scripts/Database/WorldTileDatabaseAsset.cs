@@ -4,7 +4,8 @@ using UnityEngine;
 namespace MyProject.Database
 {
     [CreateAssetMenu(fileName = "DatabaseAsset_WorldTile_Default", menuName = "MyDatabase/WorldTile")]
-    public class WorldTileDatabaseAsset : ScriptableObject
+    [DatabaseKey("Name")]
+    public class WorldTileDatabaseAsset : DatabaseAssetBase
     {
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
