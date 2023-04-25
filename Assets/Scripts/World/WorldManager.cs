@@ -5,26 +5,30 @@ using System.Linq;
 using MyProject.Database;
 using System;
 using MyProject.Core;
+using MyProject.VoxelEngine;
 namespace MyProject.World
 {
+    #region SaveLoad
     [Serializable]
-    public class WorldManagerDataPersistance
+    public class WorldManagerSaveData
     {
-        public WorldCharacterControllerDataPersistance worldCharacterDataPersistance;
-        public WorldDataPersistance worldDataPersistance;
-        public WorldManagerDataPersistance(WorldDataPersistance worldDataPersistance, WorldCharacterControllerDataPersistance worldCharacterDataPersistance)
+        public WorldCharacterControllerSaveData worldCharacterSaveData;
+        public WorldSaveData worldSaveData;
+        public WorldManagerSaveData(WorldSaveData worldSaveData, WorldCharacterControllerSaveData worldCharacterSaveData)
         {
-            this.worldDataPersistance = worldDataPersistance;
-            this.worldCharacterDataPersistance = worldCharacterDataPersistance;
+            this.worldSaveData = worldSaveData;
+            this.worldCharacterSaveData = worldCharacterSaveData;
         }
     }
+    #endregion
     /// <summary> 控制生成世界、渲染世界（没有具体逻辑，主要是调用管理其他类） </summary>
     public class WorldManager : MonoBehaviour
     {
         public World World { get; private set; }
-        public WorldMeshData WorldMeshData { get; private set; }
         [SerializeField]
-        private VoxelMeshRenderer _voxelMeshRenderer;
+        private MeshFilter _meshFilter;
+        [SerializeField]
+        private MeshCollider _meshCollider;
         [SerializeField]
         private WorldGenerationDatabaseAsset _worldGenerationDatabaseAsset;
         [SerializeField]
@@ -40,8 +44,10 @@ namespace MyProject.World
         /// <summary> 计算Mesh、提交渲染一条龙服务 </summary>
         private void RenderWorld()
         {
-            WorldMeshData = WorldMeshGenerator.GenerateWorldMesh(World);
-            _voxelMeshRenderer.RenderWorldMesh(WorldMeshData);
+            var compoundMeshData = VoxelSpaceMeshGenerator.GenerateMesh(World);
+            var mesh = compoundMeshData.CombineMesh();
+            _meshFilter.mesh = mesh;
+            _meshCollider.sharedMesh = mesh;
         }
         /// <summary> 随机新世界，并且刷新角色 </summary>
         public void NewWorld()
@@ -51,15 +57,15 @@ namespace MyProject.World
             SpawnCharacterAtTileIndex(playerTileIndex);
             RenderWorld();
         }
-        public void LoadWorld(WorldManagerDataPersistance worldManagerDataPersistace)
+        public void LoadWorld(WorldManagerSaveData worldManagerDataPersistace)
         {
-            World = new World(worldManagerDataPersistace.worldDataPersistance);
-            LoadCharacter(worldManagerDataPersistace.worldCharacterDataPersistance);
+            World = new World(worldManagerDataPersistace.worldSaveData);
+            LoadCharacter(worldManagerDataPersistace.worldCharacterSaveData);
             RenderWorld();
         }
-        public WorldManagerDataPersistance SaveWorld()
+        public WorldManagerSaveData SaveWorld()
         {
-            return new WorldManagerDataPersistance(World.DoDataPersistance(), _playerCharacter.DoDataPersistance());
+            return new WorldManagerSaveData(World.GetSaveData(), _playerCharacter.DoDataPersistance());
         }
         /// <summary> 在指定tileIndex刷新角色（非读档） </summary>
         private void SpawnCharacterAtTileIndex(int tileIndex)
@@ -67,7 +73,7 @@ namespace MyProject.World
             _playerCharacterGO.SetActive(true);
             _playerCharacter = new(World, _playerCharacterGO.transform, tileIndex);
         }
-        private void LoadCharacter(WorldCharacterControllerDataPersistance dataPersistance)
+        private void LoadCharacter(WorldCharacterControllerSaveData dataPersistance)
         {
             _playerCharacterGO.SetActive(true);
             _playerCharacter = new(World, _playerCharacterGO.transform, dataPersistance);
@@ -76,7 +82,7 @@ namespace MyProject.World
         public void SelectTile(int index)
         {
             if (index == SelectedTileIndex) return;
-            _SelectionHintGO.transform.position = World.GetTileOriginPositionByIndex(index);
+            _SelectionHintGO.transform.position = World.GetVoxelOriginPositionByIndex(index);
             SelectedTileIndex = index;
             OnTileSelected?.Invoke();
         }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using MyProject.Database;
+using MyProject.VoxelEngine;
 namespace MyProject.World
 {
     /// <summary>
@@ -37,8 +38,8 @@ namespace MyProject.World
                     DatabaseManager.Instance.WorldTiles.TryGetIndexByKey("Sand", out desiredTileID);  // 海平面往下是沙子
                 }
 
-                var generatedTile = new WorldTile(desiredTileID, generatedAltitude);
-                world.worldTiles[world.GetIndexAt(x, y)] = generatedTile;
+                var generatedVoxel = new Voxel(desiredTileID, generatedAltitude);
+                world.voxels[world.GetIndexAt(x, y)] = generatedVoxel;
             }
             // 采样得到海拔。TODO：优化算法，现在是纯纯的PerlinNoise
             int GetAltitudeAtCoordinates(int x, int y)

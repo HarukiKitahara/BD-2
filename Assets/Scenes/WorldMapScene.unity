@@ -1654,7 +1654,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9f5e52437d598249bd531b41d2d918c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _voxelMeshRenderer: {fileID: 1404856240}
+  _meshFilter: {fileID: 1404856243}
+  _meshCollider: {fileID: 1404856241}
   _worldGenerationDatabaseAsset: {fileID: 11400000, guid: 0ce50d70f5468644a9fbf42b4a8e39ad,
     type: 2}
   _playerCharacterGO: {fileID: 1066314351}
@@ -2108,15 +2109,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 609ba79873ab54e45a9c59a366cfae2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldTileDatabaseAssets:
-  - {fileID: 11400000, guid: 93e1c37bab1ade240a322e6cd06a0391, type: 2}
-  - {fileID: 11400000, guid: 3aff1801d7d399c4f9168dbd75e4bf76, type: 2}
-  - {fileID: 11400000, guid: 48a00edf72ff95b41b6cb006fb8e64be, type: 2}
-  waterDatabaseAssets: {fileID: 11400000, guid: ba15af3ec108f9947987e87f91dc8e63,
-    type: 2}
-  itemDatabaseAssets:
-  - {fileID: 11400000, guid: c1792c047f2076b429db47779d9dda9a, type: 2}
-  - {fileID: 11400000, guid: b5fd90b27a5a4b941b8e2c50f3dde9d0, type: 2}
 --- !u!4 &1383044441
 Transform:
   m_ObjectHideFlags: 0
@@ -2364,7 +2356,6 @@ GameObject:
   - component: {fileID: 1404856243}
   - component: {fileID: 1404856242}
   - component: {fileID: 1404856241}
-  - component: {fileID: 1404856240}
   m_Layer: 3
   m_Name: WorldMesh
   m_TagString: Untagged
@@ -2372,18 +2363,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1404856240
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1404856239}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62338e7c10ee200479215bd835bec4cc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!64 &1404856241
 MeshCollider:
   m_ObjectHideFlags: 0

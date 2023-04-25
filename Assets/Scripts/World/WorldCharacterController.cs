@@ -9,7 +9,7 @@ namespace MyProject.World
         north, east, south, west
     }
     [System.Serializable]
-    public class WorldCharacterControllerDataPersistance
+    public class WorldCharacterControllerSaveData
     {
         public int tileIndex;
         public EDirection direction;
@@ -18,7 +18,7 @@ namespace MyProject.World
     {
         private readonly World _world;
         private readonly Transform _transform;
-        private readonly WorldCharacterControllerDataPersistance _dataPersistance;
+        private readonly WorldCharacterControllerSaveData _dataPersistance;
         public int TileIndex { get => _dataPersistance.tileIndex; private set => _dataPersistance.tileIndex = value; }
         public EDirection Direction { get => _dataPersistance.direction; private set => _dataPersistance.direction = value; }
         public WorldCharacterController(World world, Transform transform, int tileIndex, EDirection direction = EDirection.north)
@@ -26,12 +26,12 @@ namespace MyProject.World
             if (world == null || transform == null) throw new System.Exception("弟阿，你怎么甩给我null");
             _world = world;
             _transform = transform;
-            _dataPersistance = new WorldCharacterControllerDataPersistance();
+            _dataPersistance = new WorldCharacterControllerSaveData();
             TileIndex = tileIndex;
             Direction = direction;
             UpdateTransform();
         }
-        public WorldCharacterController(World world, Transform transform, WorldCharacterControllerDataPersistance dataPersistance)
+        public WorldCharacterController(World world, Transform transform, WorldCharacterControllerSaveData dataPersistance)
         {
             if (world == null || transform == null) throw new System.Exception("弟阿，你怎么甩给我null");
             _world = world;
@@ -42,11 +42,11 @@ namespace MyProject.World
         }
         private void UpdateTransform()
         {
-            _transform.position = _world.GetTileGroundCenterPositionByIndex(TileIndex);
+            _transform.position = _world.GetVoxelGroundCenterPositionByIndex(TileIndex);
             // TODO：_transform.rotation
             // 需要顺着A*寻路一起推，到时候输入的就是一串方向序列。
         }
-        public WorldCharacterControllerDataPersistance DoDataPersistance()
+        public WorldCharacterControllerSaveData DoDataPersistance()
         {
             return _dataPersistance;
         }
@@ -56,7 +56,7 @@ namespace MyProject.World
         {
             if (TileIndex == index) return;
             TileIndex = index;
-            _transform.DOMove(_world.GetTileGroundCenterPositionByIndex(index), 1f);
+            _transform.DOMove(_world.GetVoxelGroundCenterPositionByIndex(index), 1f);
         }
     }
 }

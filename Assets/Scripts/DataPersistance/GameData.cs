@@ -8,7 +8,7 @@ namespace MyProject.DataPersistance
     [System.Serializable]
     public class GameData
     {
-        public WorldManagerDataPersistance worldManagerDataPersistace;
+        public WorldManagerSaveData worldManagerDataPersistace;
     }
 }
 

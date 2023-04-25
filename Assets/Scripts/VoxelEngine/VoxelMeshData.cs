@@ -10,7 +10,7 @@ using UnityEngine;
  * 两个按【顺时针】方向定义的三角形分别是(0, 1, 2)和(0, 2, 3)
  * Normal朝向符合左手定则，按这种方法拆分Normal一定朝外，这样才能正常看到Quad表面。
  */
-namespace MyProject.World
+namespace MyProject.VoxelEngine
 {
     /// <summary>
     /// Voxel方位表记法，规定“向外”Normal的方向。
@@ -21,7 +21,10 @@ namespace MyProject.World
         up, left, forward, right, back, down
     }
     /// <summary>
-    /// MeshData数据，用来生成真正的Mesh。此外还提供便利的生成工具
+    /// MeshData数据，用来生成真正的Mesh
+    /// 只对应一种Material，不考虑任何SubMesh的情况。
+    /// 实操下来可能就是一种Tile对应一个VoxelMeshData，送给不同的MeshCollider，然后再合并成大Mesh，用来渲染。
+    /// 此外还提供便利的生成工具
     /// </summary>
     public class VoxelMeshData
     {
@@ -33,9 +36,8 @@ namespace MyProject.World
 
         public readonly List<Vector3> vertices = new();
         public readonly List<int> triangles = new();
-        public readonly List<Vector2> uv = new();
-        //public readonly List<Vector3> colliderVertices = new();
-        //public readonly List<int> colliderTriangles = new();        
+        public readonly List<Vector2> uv = new();     
+        /// <summary> 三角形总数，不是三角形index的总长度！ </summary>
         public int TrisCount { get; private set; }
         /// <summary> 将Quad拆成两个三角形，分别写入MeshData </summary>
         public void AddQuadInfo(Vector3 vertex1, Vector3 vertex2, Vector3 vertex3, Vector3 vertex4, Vector2 uv1, Vector2 uv2, Vector2 uv3, Vector2 uv4)
