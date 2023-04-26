@@ -10,7 +10,7 @@ namespace MyProject.World
     /// </summary>
     public static class VoxelSpaceMeshGenerator
     {
-        public static CompoundVoxelMeshData GenerateMesh(World world)
+        public static VoxelMeshData[] GenerateMesh(World world)
         {
             var meshData = new VoxelMeshData();
             var subMeshData = new VoxelMeshData();
@@ -18,7 +18,7 @@ namespace MyProject.World
             DatabaseManager.Instance.WorldTiles.TryGetAssetByKey("Water", out var waterAsset);
 
             world.IterateAllCoordinates(HandleMeshDataAt);
-            return new CompoundVoxelMeshData(new VoxelMeshData[2] { meshData, subMeshData });
+            return new VoxelMeshData[2] { meshData, subMeshData };
 
             // °¤¸ö¼Ó½øMeshData
             void HandleMeshDataAt(int x, int y)

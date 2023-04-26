@@ -44,10 +44,10 @@ namespace MyProject.World
         /// <summary> 计算Mesh、提交渲染一条龙服务 </summary>
         private void RenderWorld()
         {
-            var compoundMeshData = VoxelSpaceMeshGenerator.GenerateMesh(World);
-            var mesh = compoundMeshData.CombineMesh();
-            _meshFilter.mesh = mesh;
-            _meshCollider.sharedMesh = mesh;
+            var meshDatas = VoxelSpaceMeshGenerator.GenerateMesh(World);
+            var meshs = VoxelMeshHelper.BuildMeshs(meshDatas);
+            _meshFilter.mesh = VoxelMeshHelper.MergeMesh(false, meshs);
+            _meshCollider.sharedMesh = meshs[0];        // 只有地面需要collider
         }
         /// <summary> 随机新世界，并且刷新角色 </summary>
         public void NewWorld()
