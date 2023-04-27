@@ -21,7 +21,6 @@ namespace MyProject.Gameplay
             AttributeController = GetComponent<CharacterAttributeController>();
             CharacterMovementController = GetComponent<CharacterMovementController>();
             CharacterRotationController = GetComponent<CharacterRotationController>();
-            //CharacterStanceController = GetComponent<CharacterStanceController>();
         }
         private void OnTriggerStay(Collider other)
         {

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 using MyProject.Database;
+using System;
 namespace MyProject.Gameplay
 {
     /// <summary>
@@ -13,6 +14,7 @@ namespace MyProject.Gameplay
         public float Capacity { get; private set; }
         public readonly List<Item> items = new();
         //private readonly Dictionary<int, Item> unstackableItems = new();
+        public event Action<Item> OnItemStored;
         public Inventory(float capacity)
         {
             Capacity = capacity;
@@ -38,12 +40,15 @@ namespace MyProject.Gameplay
                 else
                 {
                     itemInInventory.Merge(item);
+                    OnItemStored?.Invoke(itemInInventory);
+                    return;
                 }
             }
             else
             {
                 items.Add(item);    // 不可堆叠的直接加进来
             }
+            OnItemStored?.Invoke(item);
         }
         public void Retrive()
         {

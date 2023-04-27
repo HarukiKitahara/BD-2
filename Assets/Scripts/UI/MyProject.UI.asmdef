@@ -2,11 +2,12 @@
     "name": "MyProject.UI",
     "rootNamespace": "MyProject.UI",
     "references": [
-        "GUID:dc6d2de4a8b75d34494b0c72c58b787d",
         "GUID:6055be8ebefd69e48b49212b09b47b2f",
         "GUID:267c1f8739a8ac94ab663d0333bb4718",
+        "GUID:12acda11349480f4a861c2636dd55edf",
+        "GUID:b31b63adab6f577469715774f5a896e0",
         "GUID:5aefb4b4cf730b6488a166105841ce4b",
-        "GUID:b31b63adab6f577469715774f5a896e0"
+        "GUID:dc6d2de4a8b75d34494b0c72c58b787d"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

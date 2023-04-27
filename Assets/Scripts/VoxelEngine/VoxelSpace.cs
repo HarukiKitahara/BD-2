@@ -56,6 +56,21 @@ namespace MyProject.VoxelEngine
                 return x >= 0 && x < length;
             }
         }
+        /// <summary> 检测坐标是否在Space边界 </summary>
+        public bool IsOnEdge(int x, int y)
+        {
+            return IsPartialCoordinateOnEdge(x) || IsPartialCoordinateOnEdge(y);
+            bool IsPartialCoordinateOnEdge(int x)
+            {
+                return x == 0 || x == length-1;
+            }
+        }
+        /// <summary> 检测坐标是否在Space边界 </summary>
+        public bool IsOnEdge(int index)
+        {
+            var coord = GetCoordinateByIndex(index);
+            return IsOnEdge(coord.Item1, coord.Item2);
+        }
         public Voxel GetVoxelAt(int x, int y)
         {
             if (!IsValidCoordinate(x, y)) return null;
@@ -90,6 +105,10 @@ namespace MyProject.VoxelEngine
         {
             var originPosition = GetVoxelOriginPositionByIndex(index);
             return new Vector3(originPosition.x + 0.5f, originPosition.y + 1f, originPosition.z + 0.5f);
+        }
+        public Vector3 GetVoxelGroundCenterPositionByIndex(int x, int y)
+        {
+            return GetVoxelGroundCenterPositionByIndex(GetIndexAt(x, y));
         }
         /// <summary> 获取地块Local原点坐标(0, 0, 0) </summary>
         public Vector3 GetVoxelOriginPositionByIndex(int index)

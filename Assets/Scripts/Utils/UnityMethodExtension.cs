@@ -15,7 +15,8 @@ namespace MyProject.Utils
         /// <returns></returns>
         public static Vector3 Clamp(this Vector3 vector3, float min, float max)
         {
-            if (vector3 == Vector3.zero) return Vector3.zero;
+            if (vector3 == Vector3.zero || max <= 0) return Vector3.zero;
+            if (min < 0) min = 0;
             return Mathf.Clamp(vector3.magnitude, min, max) * vector3.normalized;
         }
         /// <summary>

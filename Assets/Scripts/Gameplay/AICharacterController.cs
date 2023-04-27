@@ -7,6 +7,7 @@ namespace MyProject.Gameplay
     public class AICharacterController : MonoBehaviour
     {
         private CharacterStanceController _stanceController;
+        [SerializeField] private Transform _playerTransform;
         void Start()
         {
             _stanceController = GetComponent<CharacterStanceController>();
@@ -15,7 +16,7 @@ namespace MyProject.Gameplay
         // Update is called once per frame
         void Update()
         {
-            _stanceController.SetMoveDirection(Vector3.forward);
+            _stanceController.SetMoveDirection(_playerTransform.position - transform.position);
         }
     }
 }

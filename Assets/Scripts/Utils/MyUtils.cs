@@ -11,5 +11,27 @@ namespace MyProject.Utils
         {
             return Camera.main.ScreenPointToRay(Input.mousePosition);
         }
+
+        // 我是傻逼：有现成的LerpAngle方法
+        /// <summary>
+        /// 从angle1旋转到angle2，结果限制在0~360之间
+        /// </summary>
+        //public static float LerpAngle(float angle1, float angle2, float value)
+        //{
+        //    value = Mathf.Clamp01(value);
+        //    angle1 = Mathf.Clamp(value, 0, 360);
+        //    angle2 = Mathf.Clamp(value, 0, 360);
+        //    if (Mathf.Abs(angle1 - angle2) <= 180)
+        //    {
+        //        if (angle2 < angle1) Swap(ref angle1, ref angle2);
+                
+        //    }
+        //}
+        public static void Swap<T>(ref T lhs, ref T rhs)
+        {
+            var temp = lhs;
+            lhs = rhs;
+            rhs = temp;
+        }
     }
 }
