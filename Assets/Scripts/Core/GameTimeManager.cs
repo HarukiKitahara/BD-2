@@ -18,7 +18,7 @@ namespace MyProject.Core
         /// <summary>
         /// 默认一倍速，即现实时间1s = 游戏世界1s。
         /// </summary>
-        private float _gameSpeed = 1f;
+        private float _gameSpeed = 3600f;      // 测试先用3600倍速
         public bool IsPaused { get; private set; }
 
         private int _lastGameMinute;
@@ -26,7 +26,7 @@ namespace MyProject.Core
         private int _lastGameSecond;
         //public float DeltaTime { get => 1 / gameSpeed; }
         //public DateTime GameStartTime = new DateTime(2020, 11, 02, 10, 30, 0);
-        private readonly DateTime _gameStartTime = new(1453, 5, 29, 9, 0, 0);
+        private readonly DateTime _gameStartTime = new(1453, 5, 29, 0, 0, 0);
         public DateTime GameTime { get => _gameStartTime.AddSeconds(TotalGameTime); }
 
         public Action updateEveryTickEvent;
@@ -99,6 +99,10 @@ namespace MyProject.Core
         public void FlipGamePauseState()
         {
             if (IsPaused) UnpauseGame(); else PauseGame();
+        }
+        public float GetDayProgress()
+        {
+            return (float)GameTime.TimeOfDay.Ticks / TimeSpan.TicksPerDay;
         }
     }
 }

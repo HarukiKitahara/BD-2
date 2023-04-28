@@ -33,5 +33,18 @@ namespace MyProject.Utils
             lhs = rhs;
             rhs = temp;
         }
+        /// <summary>
+        /// 真正的modulo！（结果非负）
+        /// https://github.com/dotnet/csharplang/discussions/4744
+        /// </summary>
+        public static float Mod(float a, float b)
+        {
+            float c = a % b;
+            if ((c < 0 && b > 0) || (c > 0 && b < 0))
+            {
+                c += b;
+            }
+            return c;
+        }
     }
 }
