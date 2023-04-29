@@ -13,7 +13,6 @@ namespace MyProject.Gameplay
     {
         //public Quaternion DesiredRotation { get; private set; }
         private RegistrableBool _isRotationLocked;     // 强制锁定朝向不准动，对应LockRotation
-        private bool _isDesiredRotationEnabled;    // 优先级比强制锁定低，但不会被屏蔽，对应SetRotation
         [SerializeField]
         private float _angularSpeed = 10f;
         private float _desiredAngle = 0f;
@@ -24,7 +23,7 @@ namespace MyProject.Gameplay
         }
         private void Update()
         {
-            if (!_isRotationLocked.Value && _isDesiredRotationEnabled)
+            if (!_isRotationLocked.Value)
             {
                 // 平滑插值，转动Root
                 transform.rotation = Quaternion.Euler(0, Mathf.LerpAngle(transform.rotation.eulerAngles.y, _desiredAngle, _angularSpeed * Time.deltaTime), 0);
@@ -48,7 +47,6 @@ namespace MyProject.Gameplay
         }
         public void SetDesiredRotation(float angle)
         {
-            _isDesiredRotationEnabled = true;
             _desiredAngle = angle;
         }
         public void SetDesiredRotation(Vector3 direction)
@@ -60,11 +58,6 @@ namespace MyProject.Gameplay
         {
             SetDesiredRotation(quaternion.eulerAngles.y);
         }
-        public void ResetDesiredRotation()
-        {
-            _isDesiredRotationEnabled = false;
-        }
-
         private Quaternion GetQuaternionByAngle(float angle)
         {
             return Quaternion.Euler(0, angle, 0);

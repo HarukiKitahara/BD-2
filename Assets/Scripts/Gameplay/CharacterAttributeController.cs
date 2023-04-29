@@ -4,21 +4,14 @@ using UnityEngine;
 using MyProject.Core;
 namespace MyProject.Gameplay
 {
-    public class CharacterAttributeController : MonoBehaviour
+    public class CharacterAttributeController
     {
-        public float Mass { get ; private set; }
-        public float Acceleration { get; private set; }
-        public CommonValue Health { get; private set; }
-        private void Awake()
+        public readonly CommonValue health;
+        public readonly CommonValue hunger;
+        public CharacterAttributeController()
         {
-            Health = new CommonValue(100, 0, 100);
-            Health.ValueMinEvent += Die;
-
-            Mass = 50f;
-        }
-        private void Die()
-        {
-            Destroy(gameObject);
+            health = new CommonValue(100, 0, 100);
+            hunger = new CommonValue(100, 0, 100);
         }
     }
 }

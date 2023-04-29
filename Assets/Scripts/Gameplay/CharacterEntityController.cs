@@ -15,10 +15,10 @@ namespace MyProject.Gameplay
         public CharacterRotationController CharacterRotationController { get; private set; }
         public CharacterAttributeController AttributeController { get; private set; }
         //public CharacterStanceController CharacterStanceController { get; private set; }
-        private void Start()
+        private void Awake()
         {
             _hurtEventHandler = new HurtEventHandler(this);
-            AttributeController = GetComponent<CharacterAttributeController>();
+            AttributeController = new CharacterAttributeController();
             CharacterMovementController = GetComponent<CharacterMovementController>();
             CharacterRotationController = GetComponent<CharacterRotationController>();
         }
@@ -32,7 +32,7 @@ namespace MyProject.Gameplay
         /// <param name="momentum"></param>
         public void ApplyImpluseMomentum(Vector3 momentum)
         {
-            CharacterMovementController.ForceSetVelocity(CharacterMovementController.LastFrameVelocity + momentum / AttributeController.Mass);
+            CharacterMovementController.ForceSetVelocity(CharacterMovementController.LastFrameVelocity + momentum / 50f);
         }
     }
 }

@@ -14,8 +14,8 @@ namespace MyProject.Gameplay
         {
             Space = VoxelSpaceGenerator.GenerateFlatSpace(50);
             var voxelMeshData = VoxelSpaceMeshGenerator.GenerateMesh(Space);
-            _meshFilter.mesh = VoxelMeshHelper.BuildMesh(voxelMeshData);
-            _meshCollider.sharedMesh = _meshFilter.sharedMesh;
+            _meshFilter.mesh = VoxelMeshHelper.BuildMesh(voxelMeshData.opaque);
+            _meshCollider.sharedMesh = VoxelMeshHelper.BuildMesh(voxelMeshData.collider);
 
             CharacterGO.SetActive(true);
             CharacterGO.transform.position = Space.GetVoxelGroundCenterPositionByIndex(25, 25);

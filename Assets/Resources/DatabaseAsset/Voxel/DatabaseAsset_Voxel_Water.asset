@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e932a443d3c5c24bb3e34c08e1739c1, type: 3}
-  m_Name: DatabaseAsset_WorldTile_Dirt
+  m_Name: DatabaseAsset_Voxel_Water
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Dirt
-  <Description>k__BackingField: "\u829D\u58EB\u6CE5\u571F"
-  <SpawnWeight>k__BackingField: 10
+  <Name>k__BackingField: Water
+  <Description>k__BackingField: "\u829D\u58EB\u6C34"
   <TextureInfo>k__BackingField:
-    Up: {x: 6, y: 9}
-    Side: {x: 2, y: 2}
-    RepeatingSide: {x: 3, y: 5}
+    Up: {x: 7, y: 0}
+    Side: {x: 0, y: 0}
+    RepeatingSide: {x: 0, y: 0}
+  <RenderCategory>k__BackingField: 2
+  <HasCollider>k__BackingField: 0

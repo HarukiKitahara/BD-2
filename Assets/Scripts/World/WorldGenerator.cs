@@ -27,15 +27,15 @@ namespace MyProject.World
                 int desiredTileID;  // 根据海拔生成地块类型
                 if (generatedAltitude <= world.seaLevel - 1)
                 {
-                    DatabaseManager.Instance.WorldTiles.TryGetIndexByKey("Stone", out desiredTileID);  // 低于海平面3格就是石头
+                    DatabaseManager.Instance.Voxels.TryGetIndexByKey("Stone", out desiredTileID);  // 低于海平面3格就是石头
                 }
                 else if (generatedAltitude > world.seaLevel)
                 {
-                    DatabaseManager.Instance.WorldTiles.TryGetIndexByKey("Grass", out desiredTileID);  // 海平面往上就是草地
+                    DatabaseManager.Instance.Voxels.TryGetIndexByKey("Grass", out desiredTileID);  // 海平面往上就是草地
                 }
                 else
                 {
-                    DatabaseManager.Instance.WorldTiles.TryGetIndexByKey("Sand", out desiredTileID);  // 海平面往下是沙子
+                    DatabaseManager.Instance.Voxels.TryGetIndexByKey("Sand", out desiredTileID);  // 海平面往下是沙子
                 }
 
                 var generatedVoxel = new Voxel(desiredTileID, generatedAltitude);

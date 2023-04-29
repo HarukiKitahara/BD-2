@@ -57,6 +57,10 @@ namespace MyProject.MyInput
         private void Update()
         {
             if (_stanceController.IsLookingAt) LookAtPointerPosition();
+            if (Input.GetMouseButtonDown(0) && !MyUtils.IsPointerOverGameObject())
+            {
+                _stanceController.TryAttack();
+            }
         }
         #endregion
         #region ½ÇÉ«ÒÆ¶¯¿ØÖÆ

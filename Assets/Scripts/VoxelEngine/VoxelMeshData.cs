@@ -45,7 +45,12 @@ namespace MyProject.VoxelEngine
             AddTriangleInfo(vertex1, vertex2, vertex3, uv1, uv2, uv3);
             AddTriangleInfo(vertex1, vertex3, vertex4, uv1, uv3, uv4);
         }
-        
+        public void AddQuadInfo(Vector3 vertex1, Vector3 vertex2, Vector3 vertex3, Vector3 vertex4)
+        {
+            AddTriangleInfo(vertex1, vertex2, vertex3);
+            AddTriangleInfo(vertex1, vertex3, vertex4);
+        }
+
         /// <summary> 将三角形三个顶点和uv以逆时针的顺序写入MeshData </summary>
         public void AddTriangleInfo(Vector3 vertex1, Vector3 vertex2, Vector3 vertex3, Vector2 uv1, Vector2 uv2, Vector2 uv3)
         {
@@ -60,7 +65,17 @@ namespace MyProject.VoxelEngine
             triangles.Add(TrisCount * 3 + 2);
             TrisCount++;    // 由于顶点和uv都无法重复利用，所以虽然三角形顶点有很多重合，但还是只能来多少写入多少。
         }
-        
+        public void AddTriangleInfo(Vector3 vertex1, Vector3 vertex2, Vector3 vertex3)
+        {
+            vertices.Add(vertex1);
+            vertices.Add(vertex2);
+            vertices.Add(vertex3);
+            triangles.Add(TrisCount * 3);
+            triangles.Add(TrisCount * 3 + 1);
+            triangles.Add(TrisCount * 3 + 2);
+            TrisCount++;
+        }
+
         /// <summary>
         /// 将Voxel某个表面的（Quad）写入MeshData。注意看各个参数的使用规范
         /// </summary>
@@ -136,6 +151,55 @@ namespace MyProject.VoxelEngine
                         (uvIndex + new Vector2Int(0, 1)) / uvSize + uvOffset1,
                         (uvIndex + new Vector2Int(1, 1)) / uvSize + uvOffset2,
                         (uvIndex + new Vector2Int(1, 0)) / uvSize + uvOffset3
+                        );
+                    break;
+                default:
+                    throw new System.Exception("特殊情况还没做（应该不会有正下方的情况吧）。。。");
+            }
+        }
+        public void AddVoxelSurface(Vector3 voxelOrigin, EVoxelSurface surface)
+        {
+            // 【有坑】uvSize和unIndex理论上都应该是整数，但是整数相除还是整数，所以就都先转成float了
+            switch (surface)
+            {
+                case EVoxelSurface.up:  // 按开头定义的顺序写入Quad顶点和uv信息，下同
+                    AddQuadInfo(
+                        voxelOrigin + new Vector3(0, 1, 0),
+                        voxelOrigin + new Vector3(0, 1, 1),
+                        voxelOrigin + new Vector3(1, 1, 1),
+                        voxelOrigin + new Vector3(1, 1, 0)
+                        );
+                    break;
+                case EVoxelSurface.left:
+                    AddQuadInfo(
+                        voxelOrigin + new Vector3(0, 0, 1),
+                        voxelOrigin + new Vector3(0, 1, 1),
+                        voxelOrigin + new Vector3(0, 1, 0),
+                        voxelOrigin + new Vector3(0, 0, 0)
+                        );
+                    break;
+                case EVoxelSurface.forward:
+                    AddQuadInfo(
+                        voxelOrigin + new Vector3(1, 0, 1),
+                        voxelOrigin + new Vector3(1, 1, 1),
+                        voxelOrigin + new Vector3(0, 1, 1),
+                        voxelOrigin + new Vector3(0, 0, 1)
+                        );
+                    break;
+                case EVoxelSurface.right:
+                    AddQuadInfo(
+                        voxelOrigin + new Vector3(1, 0, 0),
+                        voxelOrigin + new Vector3(1, 1, 0),
+                        voxelOrigin + new Vector3(1, 1, 1),
+                        voxelOrigin + new Vector3(1, 0, 1)
+                        );
+                    break;
+                case EVoxelSurface.back:
+                    AddQuadInfo(
+                        voxelOrigin + new Vector3(0, 0, 0),
+                        voxelOrigin + new Vector3(0, 1, 0),
+                        voxelOrigin + new Vector3(1, 1, 0),
+                        voxelOrigin + new Vector3(1, 0, 0)
                         );
                     break;
                 default:

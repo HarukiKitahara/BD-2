@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2e932a443d3c5c24bb3e34c08e1739c1, type: 3}
-  m_Name: DatabaseAsset_WorldTile_Sand
+  m_Name: DatabaseAsset_Voxel_InvisibleWall
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Sand
-  <Description>k__BackingField: "\u829D\u58EB\u6C99\u5B50"
-  <SpawnWeight>k__BackingField: 10
+  <Name>k__BackingField: InvisibleWall
+  <Description>k__BackingField: "\u829D\u58EB\u7A7A\u6C14\u5899"
   <TextureInfo>k__BackingField:
-    Up: {x: 7, y: 3}
-    Side: {x: 3, y: 3}
-    RepeatingSide: {x: 3, y: 3}
+    Up: {x: 9, y: 9}
+    Side: {x: 9, y: 9}
+    RepeatingSide: {x: 9, y: 9}
+  <RenderCategory>k__BackingField: 0
+  <HasCollider>k__BackingField: 1

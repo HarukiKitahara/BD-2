@@ -7,6 +7,7 @@ namespace MyProject.Gameplay
     public enum EStanceCategory { walk, run, crouch }
     public class CharacterStanceController : MonoBehaviour
     {
+        private const float ATTACK_COOLDOWN = 1f;
         [SerializeField] private float _walkSpeed = 2f;
         [SerializeField] private float _runSpeed = 4f;
         private CharacterMovementController _movementController;
@@ -15,6 +16,9 @@ namespace MyProject.Gameplay
         public EStanceCategory StanceCategory { get; private set; }
         public bool IsLookingAt { get; private set; }
         public Vector3 Velocity => _movementController.LastFrameVelocity;
+
+        private float _lastAttackTime;
+        public event Action OnAttack;
         private void Start()
         {
             _movementController = GetComponent<CharacterMovementController>();
@@ -42,16 +46,15 @@ namespace MyProject.Gameplay
         {
             if (direction == Vector3.zero)
             {
-                ResetMoveDirection();
+                StopMoving();
                 return;
             }
             _keepMoveDirection = direction.normalized;
             if (!IsLookingAt) _rotationController.SetDesiredRotation(direction);
         }
-        public void ResetMoveDirection()
+        public void StopMoving()
         {
             _keepMoveDirection = Vector3.zero;
-            if (!IsLookingAt) _rotationController.ResetDesiredRotation();
         }
         // 外部输入朝向，设置DesiredRotation并退出跑步姿态
         public void SetLookAtRotation(Quaternion rotation)
@@ -62,7 +65,6 @@ namespace MyProject.Gameplay
         }
         public void StopLookAtRotation()
         {
-            _rotationController.ResetDesiredRotation();
             IsLookingAt = false;
         }
         /// <summary>
@@ -70,6 +72,7 @@ namespace MyProject.Gameplay
         /// </summary>
         public void TryToggleRunState()
         {
+            if (Time.time < _lastAttackTime + ATTACK_COOLDOWN) return;
             if (StanceCategory == EStanceCategory.run)
             {
                 StanceCategory = EStanceCategory.walk;
@@ -78,6 +81,15 @@ namespace MyProject.Gameplay
             {
                 StanceCategory = EStanceCategory.run;
                 if (IsLookingAt) StopLookAtRotation();  // 切到跑步状态就不能再东张西望了
+            }
+        }
+        public void TryAttack()
+        {
+            if (Time.time > _lastAttackTime + ATTACK_COOLDOWN)
+            {
+                SetLookAtRotation(transform.rotation);
+                OnAttack?.Invoke();
+                _lastAttackTime = Time.time;
             }
         }
     }

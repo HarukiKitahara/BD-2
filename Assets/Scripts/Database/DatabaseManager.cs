@@ -11,12 +11,12 @@ namespace MyProject.Database
     /// </summary>
     public class DatabaseManager : MonoBehaviourSingletonBase<DatabaseManager>
     {
-        public DatabaseAssetManager<WorldTileDatabaseAsset> WorldTiles { get; private set; }
+        public DatabaseAssetManager<VoxelDatabaseAsset> Voxels { get; private set; }
         public DatabaseAssetManager<ItemDatabaseAsset> Items { get; private set; }
         /// <summary> 加载所有DatabaseAsset类的Manager </summary>
         protected override void InitOnAwake()
         {
-            WorldTiles = new DatabaseAssetManager<WorldTileDatabaseAsset>();
+            Voxels = new DatabaseAssetManager<VoxelDatabaseAsset>();
         }
         //public Dictionary<int, WorldTileDatabaseAsset> worldTileDic = new();
         //protected override void InitOnAwake()

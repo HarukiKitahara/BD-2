@@ -15,6 +15,7 @@ namespace MyProject.Gameplay
         {
             _animator = GetComponentInChildren<Animator>();
             _stanceController = GetComponent<CharacterStanceController>();
+            _stanceController.OnAttack += OnAttack;
         }
 
         private void Update()
@@ -46,6 +47,10 @@ namespace MyProject.Gameplay
                 _animator.SetFloat("LocomotionX", locomotionDirection.x);
                 _animator.SetFloat("LocomotionY", locomotionDirection.z);
             }
+        }
+        private void OnAttack()
+        {
+            _animator.SetTrigger("Attack");
         }
     }
 }

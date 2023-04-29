@@ -8,7 +8,7 @@ namespace MyProject.Gameplay
     {
         public void OnHit(HitInstanceProperty hitInstanceProperty, CharacterEntityController characterEntityController)
         {
-            characterEntityController.AttributeController.Health.TryChangeValue(-10f);
+            characterEntityController.AttributeController.health.TryChangeValue(-10f);
         }
     }
 }

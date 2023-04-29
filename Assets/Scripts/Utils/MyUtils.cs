@@ -11,6 +11,10 @@ namespace MyProject.Utils
         {
             return Camera.main.ScreenPointToRay(Input.mousePosition);
         }
+        public static bool IsPointerOverGameObject()
+        {
+            return UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+        }
 
         // 我是傻逼：有现成的LerpAngle方法
         /// <summary>

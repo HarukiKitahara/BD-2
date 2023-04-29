@@ -30,6 +30,8 @@ namespace MyProject.Gameplay
             _velocity.y = 0;
             _characterController.Move(_velocity * Time.deltaTime);
 
+            LastFrameVelocity = _velocity;
+
             _velocity = _velocity.normalized * Mathf.Clamp(_velocity.magnitude - ACCELERATION * Time.deltaTime, 0, MAX_SPEED);    // 速度自然衰减
         }
         ///<summary>无视加速度限制，强行设置速度（不每个Update都重设速度的话，会慢慢自动衰减到0</summary>

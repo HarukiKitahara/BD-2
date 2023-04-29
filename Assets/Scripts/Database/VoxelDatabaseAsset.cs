@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace MyProject.Database
 {
-    [CreateAssetMenu(fileName = "DatabaseAsset_WorldTile_Default", menuName = "MyDatabase/WorldTile")]
+    public enum ERenderCategory { none, opaque, transparent }
+
+    [CreateAssetMenu(fileName = "DatabaseAsset_Voxel_Default", menuName = "MyDatabase/Voxel")]
     [DatabaseKey("Name")]
-    public class WorldTileDatabaseAsset : DatabaseAssetBase
+    public class VoxelDatabaseAsset : DatabaseAssetBase
     {
         [field: SerializeField] public string Name { get; private set; }
         [field: SerializeField] public string Description { get; private set; }
-        [field: SerializeField] public float SpawnWeight { get; private set; }
         [field: SerializeField] public TextureInfo TextureInfo { get; private set; }
+        [field: SerializeField] public ERenderCategory RenderCategory { get; private set; }
+        [field: SerializeField] public bool HasCollider { get; private set; }
     }
     [System.Serializable]
     public struct TextureInfo

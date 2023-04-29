@@ -10,21 +10,22 @@ namespace MyProject.VoxelEngine
         {
             var space = new VoxelSpace(size);
 
-            DatabaseManager.Instance.WorldTiles.TryGetIndexByKey("Grass", out var grassID); // 默认种草
+            DatabaseManager.Instance.Voxels.TryGetIndexByKey("Grass", out var grassID); // 默认种草
+            DatabaseManager.Instance.Voxels.TryGetIndexByKey("InvisibleWall", out var invisibleWallID); // 边界放空气墙
 
             space.IterateAllCoordinates(GenerateVoxelAt);
             return space;
 
             void GenerateVoxelAt(int x, int y)
             {
-                var generatedAltitude = GetAltitudeAtCoordinates(x, y);     // 生成海拔
-                var generatedVoxel = new Voxel(grassID, generatedAltitude);
-                space.voxels[space.GetIndexAt(x, y)] = generatedVoxel;
-            }
-
-            int GetAltitudeAtCoordinates(int x, int y)
-            {
-                return space.IsOnEdge(x, y) ? 2 : 1;
+                if(space.IsOnEdge(x, y))
+                {
+                    space.voxels[space.GetIndexAt(x, y)] = new Voxel(invisibleWallID, 10);
+                }
+                else
+                {
+                    space.voxels[space.GetIndexAt(x, y)] = new Voxel(grassID, 1);
+                }
             }
         }
     }
