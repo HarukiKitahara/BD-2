@@ -14,13 +14,14 @@ namespace MyProject.Gameplay
         public CharacterMovementController CharacterMovementController { get; private set; }
         public CharacterRotationController CharacterRotationController { get; private set; }
         public CharacterAttributeController AttributeController { get; private set; }
-        //public CharacterStanceController CharacterStanceController { get; private set; }
+        public CharacterStanceController CharacterStanceController { get; private set; }
         private void Awake()
         {
             _hurtEventHandler = new HurtEventHandler(this);
             AttributeController = new CharacterAttributeController();
             CharacterMovementController = GetComponent<CharacterMovementController>();
             CharacterRotationController = GetComponent<CharacterRotationController>();
+            CharacterStanceController = GetComponent<CharacterStanceController>();
         }
         private void OnTriggerStay(Collider other)
         {

@@ -15,7 +15,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Sprint",
+                    "name": "StanceChange",
                     "type": "Button",
                     "id": "33f74486-0ef5-4742-b719-bec5a67de9ef",
                     "expectedControlType": "Button",
@@ -40,15 +40,6 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
-                },
-                {
-                    "name": "LookAt",
-                    "type": "Button",
-                    "id": "18904900-7186-4ecb-a3ab-6d3a35b18a2b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
                 },
                 {
                     "name": "Click",
@@ -123,7 +114,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Sprint",
+                    "action": "StanceChange",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -146,17 +137,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "MovementZoomCamera",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "2acd753e-d9cc-4685-8ccc-b6a9f0728dcb",
-                    "path": "<Mouse>/rightButton",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "LookAt",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

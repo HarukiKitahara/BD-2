@@ -20,7 +20,7 @@ namespace MyProject.Gameplay
         public EHitInstanceIFF iff = EHitInstanceIFF.foe;
         /// <summary>最小受击间隔</summary>
         public float triggerInterval = 0.5f;
-
+        public GameObject vfx;
         //public float hitStopIntensity = 0f;
         //public GameObject visualEffects;
         public IHitInstanceModule[] modules;
@@ -31,9 +31,10 @@ namespace MyProject.Gameplay
         /// </summary>
         private void Start()
         {
-            modules = new IHitInstanceModule[2];
+            modules = new IHitInstanceModule[3];
             modules[0] = new HitInstanceModule_DealDamage();
             modules[1] = new HitInstanceModule_Knockback();
+            modules[2] = new HitInstanceModule_VFX(vfx);
         }
     }
 }

@@ -19,26 +19,22 @@ namespace MyProject.MyInput
             InputActionAssetSingleton.Instance.Gameplay.Move.performed += OnMovePerformed;
             InputActionAssetSingleton.Instance.Gameplay.Move.canceled += OnMoveCanceled;
 
-            InputActionAssetSingleton.Instance.Gameplay.Sprint.performed += o => _stanceController.TryToggleRunState();
-            InputActionAssetSingleton.Instance.Gameplay.LookAt.performed += OnLookAtStart;
+            InputActionAssetSingleton.Instance.Gameplay.StanceChange.performed += o => _stanceController.TryToggleStance();
         }
-        #region 角色朝向控制
-        private void OnLookAtStart(InputAction.CallbackContext obj)
+        private void Update()
         {
-            if (_stanceController.IsLookingAt)
+            TryLookAtPointerPosition(); // 不在这里判断能不能朝向目标，交给StanceController判断，这里只负责输入
+            if (Input.GetMouseButton(0) && !MyUtils.IsPointerOverGameObject())
             {
-                _stanceController.StopLookAtRotation();
-                Debug.Log("取消朝向锁定，不再持续更新朝向");
-            }
-            else
-            {
-                LookAtPointerPosition();
-                Debug.Log("开始朝向鼠标位置");
+                _stanceController.TryAttack();
             }
         }
-        private void LookAtPointerPosition()
+        /// <summary>
+        /// 角色朝向控制
+        /// </summary>
+        private void TryLookAtPointerPosition()
         {
-            _stanceController.SetLookAtRotation(Quaternion.LookRotation(GetLookAtDirection()));
+            _stanceController.TrySetLookAtRotation(Quaternion.LookRotation(GetLookAtDirection()));
             Vector3 GetLookAtDirection()
             {
                 var ray = MyUtils.GetMouseRayAgainstMainCamera();
@@ -54,15 +50,6 @@ namespace MyProject.MyInput
                 }
             }
         }
-        private void Update()
-        {
-            if (_stanceController.IsLookingAt) LookAtPointerPosition();
-            if (Input.GetMouseButtonDown(0) && !MyUtils.IsPointerOverGameObject())
-            {
-                _stanceController.TryAttack();
-            }
-        }
-        #endregion
         #region 角色移动控制
         /// <summary>
         /// 控制移动。需要根据摄像机角度修正朝向（玩家视角下的前不一定是WorldSpace下的Vector3.forward）

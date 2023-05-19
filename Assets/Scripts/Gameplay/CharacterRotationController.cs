@@ -11,7 +11,6 @@ namespace MyProject.Gameplay
     /// </summary>
     public class CharacterRotationController : MonoBehaviour
     {
-        //public Quaternion DesiredRotation { get; private set; }
         private RegistrableBool _isRotationLocked;     // 强制锁定朝向不准动，对应LockRotation
         [SerializeField]
         private float _angularSpeed = 10f;

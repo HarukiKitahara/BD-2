@@ -11,6 +11,10 @@ namespace MyProject.Utils
         {
             return Camera.main.ScreenPointToRay(Input.mousePosition);
         }
+        public static Vector3 GetScreenPositionByWorldPosition(Vector3 position)
+        {
+            return Camera.main.WorldToScreenPoint(position);
+        }
         public static bool IsPointerOverGameObject()
         {
             return UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();

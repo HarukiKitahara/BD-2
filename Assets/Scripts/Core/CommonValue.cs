@@ -22,18 +22,18 @@ namespace MyProject.Core
             if (temp >= Max)
             {
                 Value = Max;
-                ValueMaxEvent.Invoke();
+                ValueMaxEvent?.Invoke();
             }
             else if (temp <= Min)
             {
                 Value = Min;
-                ValueMinEvent.Invoke();
+                ValueMinEvent?.Invoke();
             }
             else
             {
                 Value = temp;
             }
-            ValueChangeEvent.Invoke();
+            ValueChangeEvent?.Invoke();
         }
     }
 }

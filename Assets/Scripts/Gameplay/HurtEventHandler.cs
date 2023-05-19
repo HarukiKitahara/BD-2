@@ -38,6 +38,7 @@ namespace MyProject.Gameplay
             if (hitInstanceProperty.iff == EHitInstanceIFF.friendOrFoe) return true;    // 无论敌我就直接打
             if (hitInstanceProperty.iff == EHitInstanceIFF.none) return false;
             var isFriend = hitInstanceProperty.gameObject.CompareTag(characterEntityController.gameObject.tag);
+            //Debug.Log($"{isFriend}, {characterEntityController.gameObject.tag}");
             if (hitInstanceProperty.iff == EHitInstanceIFF.friend) return isFriend; else return !isFriend;  // 索定队友就打队友
         }
         /// <summary>确定发生受击事件，开始依次处理OnHit请求</summary>
